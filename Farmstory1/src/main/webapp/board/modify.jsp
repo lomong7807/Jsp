@@ -1,0 +1,67 @@
+<%@page import="kr.farmstory1.dto.ArticleDTO"%>
+<%@page import="kr.farmstory1.dao.ArticleDAO"%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@include file ="../_header.jsp" %>
+<%
+	request.setCharacterEncoding("UTF-8");
+	String group = request.getParameter("group");
+	String cate = request.getParameter("cate");
+	String no = request.getParameter("no");
+	
+	pageContext.include("./_aside"+group+".jsp");
+	
+	ArticleDAO dao = new ArticleDAO();
+	ArticleDTO dto = dao.selectArticle(no);
+%>
+	<script>
+	$(function(){
+		// 글 삭제
+		$('.btnCancel').click(function(){
+			
+			const result = confirm('수정한 내용이 모두 없어집니다. 정말 취소 하시겠습니까?');
+			
+			if(result){
+				return true;
+			}else{
+				<!-- 이동 안하게끔 false 리턴-->
+				return false;	
+			}
+		});
+	});
+	</script>
+    <section class="modify">
+        <h3>글수정</h3>
+        <article>
+            <form action="/Farmstory1/board/proc/updateProc.jsp?group=<%=group %>&cate=<%=cate %>&no=<%=no %>" method="post">
+            	<input type="hidden" name="no" value="<%= no %>">
+                <table>
+                    <tr>
+                        <td>제목</td>
+                        <td><input type="text" name="title" maxlength="51" value="<%= dto.getTitle() %>" placeholder="제목을 입력하세요."/></td>
+                    </tr>
+                    <tr>
+                        <td>내용</td>
+                        <td>
+                            <textarea name="content"><%= dto.getContent() %></textarea>                                
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>첨부</td>
+                        <td><input type="file" name="file"/></td>
+                    </tr>
+                </table>
+                <div>
+                    <a href="/Farmstory1/board/view.jsp?group=<%=group %>&cate=<%=cate %>&no=<%=no %>" class="btnCancel">취소</a>
+                    <input type="submit"  class="btnWrite" value="수정완료">
+                </div>
+            </form>
+        </article>
+    </section>
+    	   		<!-- 내용 끝 -->
+   		</article>
+	</section>
+</div>
+    
+    
+<%@include file ="../_footer.jsp" %>
+    
