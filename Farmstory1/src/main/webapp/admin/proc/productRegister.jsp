@@ -37,9 +37,9 @@
 	dto.setPrice(price);
 	dto.setDelivery(delivery);
 	dto.setStock(stock);
-	dto.setThumb1(thumb1);
-	dto.setThumb2(thumb2);
-	dto.setThumb3(thumb3);
+	dto.setThumb1ForRename(thumb1);
+	dto.setThumb2ForRename(thumb2);
+	dto.setThumb3ForRename(thumb3);
 	dto.setSeller(seller);
 	dto.setEtc(etc);
 	
@@ -47,5 +47,5 @@
 	dao.insertProduct(dto);
 	
 	
-	response.sendRedirect("../productRegister.jsp");
+	response.sendRedirect("/Farmstory1/admin/productList.jsp?pg=1");
 %>

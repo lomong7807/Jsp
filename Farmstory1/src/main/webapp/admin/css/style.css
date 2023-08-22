@@ -130,6 +130,10 @@ footer > p {
 
 /* 상품관리(목록) */
 #productList {}
+#productList > nav > .sort{
+	float: right;
+	padding-bottom: 10px;
+}
 #productList > article {}
 #productList > article > table {}
 #productList table {}
@@ -161,11 +165,18 @@ footer > p {
     cursor: pointer;
 }
 
-#productList .paging {            
+#productList .paging {   
+	padding: 20px;
     text-align: center;
 }
+#productList .paging > a{   
+	padding: 8px;
+	border: 1px solid #d7d7d7;
+	background-color: #f2f2f2;
+}
 
-#productList .paging > .on {
+
+#productList .paging > .current {
     font-weight: bold;
     text-decoration: underline;
 }

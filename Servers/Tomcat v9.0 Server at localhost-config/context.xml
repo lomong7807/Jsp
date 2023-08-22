@@ -27,42 +27,29 @@
     <Manager pathname="" />
     -->
     
-    <!-- 커넥션 풀 설정 -->
-    <Resource 
-    	name="jdbc/userdb"
-    	auth="Cotainer"
-    	type="javax.sql.DataSource"
-    	driverClassName="com.mysql.cj.jdbc.Driver"
-    	url="jdbc:mysql://3.39.191.39:3306/userdb"
-    	username="root"
-    	password="1234"
-    	maxTotal="13"
-    	maxIdle="13"		
-    	maxWaitMillis="3000"
+    <Resource
+	name="jdbc/Jboard"
+	auth="Container"
+	type="javax.sql.DataSource"
+	driverClassName="com.mysql.cj.jdbc.Driver"
+	url="jdbc:mysql://3.39.191.39:3306/Jboard"
+	username="jboard"
+	password="Kangys98!!"
+	maxTotal="13"
+	maxIdle="13"
+	maxWaitMillis="3000"
 	/>
-    <Resource 
-    	name="jdbc/Jboard"
-    	auth="Cotainer"
-    	type="javax.sql.DataSource"
-    	driverClassName="com.mysql.cj.jdbc.Driver"
-    	url="jdbc:mysql://3.39.191.39:3306/Jboard"
-    	username="jboard"
-    	password="Kangys98!!"
-    	maxTotal="13"
-    	maxIdle="13"		
-    	maxWaitMillis="3000"
+    <Resource
+	name="jdbc/Farmstory"
+	auth="Container"
+	type="javax.sql.DataSource"
+	driverClassName="com.mysql.cj.jdbc.Driver"
+	url="jdbc:mysql://3.39.191.39:3306/Farmstory"
+	username="farmstory"
+	password="Kangys98!!"
+	maxTotal="13"
+	maxIdle="13"
+	maxWaitMillis="3000"
 	/>
-	
-    <Resource 
-    	name="jdbc/Farmstory"
-    	auth="Cotainer"
-    	type="javax.sql.DataSource"
-    	driverClassName="com.mysql.cj.jdbc.Driver"
-    	url="jdbc:mysql://3.39.191.39:3306/Farmstory"
-    	username="farmstory"
-    	password="Kangys98!!"
-    	maxTotal="13"
-    	maxIdle="13"		
-    	maxWaitMillis="3000"
-	/>
+
 </Context>
