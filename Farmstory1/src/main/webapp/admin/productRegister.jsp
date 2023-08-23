@@ -5,13 +5,15 @@
 		
 		$('.submitBtn').click(function(){
 			alert('클릭');
-			if($('select[name=type]' == "구분"){
+			if($('select[name=type]'.val() === "구분"){
 				alert("구분을 선택하세요.");
 				return false;
+			}else{
+				return true;
 			}
-			if($('input[name=delivery]':radio:checked).length < 1){
-				alert("배송비를 선택하세요.");
-				return false;
+			if(!$('input[name=delivery]:radio').is(':checked')){
+			    alert("배송비를 선택하세요.");
+			    return false;
 			}
 		});
 	});
@@ -57,7 +59,7 @@
                     </tr>
                     <tr>
                         <td>재고</td>
-                        <td><input type="text" required name="stock"/></td>
+                        <td><input type="text" pattern="[0-9]+" required name="stock"/></td>
                     </tr>
                     <tr>
                         <td>상품이미지</td>
