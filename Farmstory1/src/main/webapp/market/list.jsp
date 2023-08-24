@@ -120,6 +120,9 @@
                 <% if(pageGroupEnd < lastPageNum){ %>
                 <a href="/Farmstory1/market/list.jsp?type=<%=type %>&pg=<%=pageGroupEnd + 1 %>" class="next">></a>
                 <% } %>
+                <% if(lastPageNum > 10){ %>
+		    	<a href="/Farmstory1/market/list.jsp?type=<%=type %>&pg=<%= lastPageNum %>" class="next">마지막</a>
+		    	<% } %>
             </div>
 
             <!-- 내용 끝 -->

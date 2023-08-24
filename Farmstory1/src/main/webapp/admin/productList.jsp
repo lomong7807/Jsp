@@ -114,6 +114,9 @@
                 <% if(pageGroupEnd < lastPageNum){ %>
                 <a href="/Farmstory1/admin/productList.jsp?type=<%=type %>&pg=<%=pageGroupEnd + 1 %>" class="next">></a>
                 <% } %>
+                <% if(lastPageNum > 10){ %>
+		    	<a href="/Farmstory1/admin/productList.jsp?type=<%=type %>&pg=<%= lastPageNum %>" class="next">마지막</a>
+		    	<% } %>
             </p>
 
         </article>

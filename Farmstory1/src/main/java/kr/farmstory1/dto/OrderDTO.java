@@ -17,14 +17,34 @@ public class OrderDTO {
 	private String orderUser;
 	private String orderDate;
 	
+	/////////////추가/////////////////////
+	private String pName;
+	private String thumb1;
+	
+	public String getpName() {
+		return pName;
+	}
+	public void setpName(String pName) {
+		this.pName = pName;
+	}
+	
+	public String getThumb1() {
+		return thumb1;
+	}
+	public void setThumb1(String thumb1) {
+		this.thumb1 = thumb1;
+	}
 	
 	
+///////////////////////////////////////////
 	public int getOrderNo() {
 		return orderNo;
 	}
 	public void setOrderNo(int orderNo) {
 		this.orderNo = orderNo;
 	}
+	
+///////////////////////////////////////////
 	public int getOrderProduct() {
 		return orderProduct;
 	}
@@ -34,6 +54,8 @@ public class OrderDTO {
 	public void setOrderProduct(String orderProduct) {
 		this.orderProduct = Integer.parseInt(orderProduct);
 	}
+	
+///////////////////////////////////////////
 	public int getOrderCount() {
 		return orderCount;
 	}
@@ -43,6 +65,8 @@ public class OrderDTO {
 	public void setOrderCount(String orderCount) {
 		this.orderCount = Integer.parseInt(orderCount);
 	}
+	
+///////////////////////////////////////////
 	public int getOrderDelivery() {
 		return orderDelivery;
 	}
@@ -52,6 +76,8 @@ public class OrderDTO {
 	public void setOrderDelivery(String orderDelivery) {
 		this.orderDelivery = Integer.parseInt(orderDelivery);
 	}
+	
+///////////////////////////////////////////
 	public int getOrderPrice() {
 		return orderPrice;
 	}
@@ -61,6 +87,8 @@ public class OrderDTO {
 	public void setOrderPrice(String orderPrice) {
 		this.orderPrice = Integer.parseInt(orderPrice);
 	}
+	
+///////////////////////////////////////////
 	public int getOrderTotal() {
 		return orderTotal;
 	}
@@ -70,42 +98,56 @@ public class OrderDTO {
 	public void setOrderTotal(String orderTotal) {
 		this.orderTotal = Integer.parseInt(orderTotal);
 	}
+	
+///////////////////////////////////////////
 	public String getOrderEtc() {
 		return orderEtc;
 	}
 	public void setOrderEtc(String orderEtc) {
 		this.orderEtc = orderEtc;
 	}
+	
+///////////////////////////////////////////
 	public String getOrderUser() {
 		return orderUser;
 	}
 	public void setOrderUser(String orderUser) {
 		this.orderUser = orderUser;
 	}
+	
+///////////////////////////////////////////
 	public String getOrderDate() {
 		return orderDate;
 	}
 	public void setOrderDate(String orderDate) {
 		this.orderDate = orderDate;
 	}
+	
+///////////////////////////////////////////
 	public String getReceiver() {
 		return receiver;
 	}
 	public void setReceiver(String receiver) {
 		this.receiver = receiver;
 	}
+	
+///////////////////////////////////////////
 	public String getHp() {
 		return hp;
 	}
 	public void setHp(String hp) {
 		this.hp = hp;
 	}
+	
+///////////////////////////////////////////
 	public String getZip() {
 		return zip;
 	}
 	public void setZip(String zip) {
 		this.zip = zip;
 	}
+	
+///////////////////////////////////////////
 	public String getAddr1() {
 		return addr1;
 	}

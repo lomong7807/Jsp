@@ -19,9 +19,9 @@
 	String finalPrice	= request.getParameter("finalPrice");
 %>
 <script>
-	const delivery = <%= delivery%>;
-	const price = <%= price%>;
-	const total = <%= total%>;
+	const delivery 	 = <%= delivery%>;
+	const price		 = <%= price%>;
+	const total 	 = <%= total%>;
 	const finalPrice = <%= finalPrice%>;
 	
 	$(function(){
@@ -95,13 +95,13 @@
             <h3>주문정보 입력</h3>
             
             <div class="shipping">
-            	<form id="formOrder" action="/Farmstory1/market/proc/orderProc.jsp">
-            	<input type="text" name="orderProduct" value="<%= pNo%>">
-            	<input type="text" name="orderCount" value="<%= count%>">
+            	<form id="formOrder" action="/Farmstory1/market/proc/orderProc.jsp" method="post">
+            	<input type="text" name="orderProduct" 	value="<%= pNo%>">
+            	<input type="text" name="orderCount" 	value="<%= count%>">
             	<input type="text" name="orderDelivery" value="<%= delivery%>">
-            	<input type="text" name="orderPrice" value="<%= price%>">
-            	<input type="text" name="orderTotal" value="<%= finalPrice%>">
-            	<input type="text" name="orderUser" value="<%= sessUser.getUid()%>">
+            	<input type="text" name="orderPrice"	value="<%= price%>">
+            	<input type="text" name="orderTotal" 	value="<%= finalPrice%>">
+            	<input type="text" name="orderUser" 	value="<%= sessUser.getUid()%>">
                 <table>
                     <tr>
                         <td>받는분</td>
@@ -114,7 +114,7 @@
                     <tr>
                         <td>배송주소</td>
                         <td>
-                            <input type="text" name="zip" required readonly value="<%= sessUser.getZip()%>"><button id="btnZip">우편번호 검색</button>
+                            <input type="text" name="zip" 	required readonly value="<%= sessUser.getZip()%>"><button id="btnZip">우편번호 검색</button>
                             <input type="text" name="addr1" required placeholder="기본주소 검색" value="<%= sessUser.getAddr1()%>">
                             <input type="text" name="addr2" placeholder="상세주소 입력" value="<%= sessUser.getAddr2()%>">
                         </td>

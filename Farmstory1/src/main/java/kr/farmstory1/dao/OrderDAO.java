@@ -1,5 +1,8 @@
 package kr.farmstory1.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import kr.farmstory1.db.DBHelper;
 import kr.farmstory1.db.SQL;
 import kr.farmstory1.dto.OrderDTO;
@@ -32,7 +35,73 @@ public class OrderDAO extends DBHelper {
 		
 	}
 	public void selectOrder() {}
-	public void selectOrders() {}
+	public int selectCountOrdersTotal() {
+		int total = 0;
+		
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.SELECT_COUNT_ORDERS_ALL);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				total = rs.getInt(1);
+			}
+			
+			close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return total;
+	}
+	public List<OrderDTO> selectOrders(int start) {
+		
+		List<OrderDTO> orders = new ArrayList<>();
+		
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.SELECT_ORDER);
+			psmt.setInt(1, start);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				OrderDTO order = new OrderDTO();
+				order.setOrderNo(rs.getInt(1));
+				order.setOrderProduct(rs.getInt(2));
+				order.setOrderCount(rs.getInt(3));
+				order.setOrderDelivery(rs.getInt(4));
+				order.setOrderPrice(rs.getInt(5));
+				order.setOrderTotal(rs.getInt(6));
+				order.setReceiver(rs.getString(7));
+				order.setHp(rs.getString(8));
+				order.setZip(rs.getString(9));
+				order.setAddr1(rs.getString(10));
+				order.setAddr2(rs.getString(11));
+				order.setOrderEtc(rs.getString(12));
+				order.setOrderUser(rs.getString(13));
+				order.setOrderDate(rs.getString(14));
+				order.setpName(rs.getString(15));
+				order.setThumb1(rs.getString(16));
+				orders.add(order);
+			}
+			close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return orders;
+	}
 	public void updateOrder() {}
-	public void deleteOrder() {}
+	public void deleteOrder(String orderNo) {
+		
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.DELETE_ORDERS);
+			psmt.setString(1, orderNo);
+			psmt.executeUpdate();
+			
+			close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

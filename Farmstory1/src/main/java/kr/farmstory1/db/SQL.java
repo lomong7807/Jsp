@@ -19,10 +19,12 @@ public class SQL {
 											+ "`regip`=?,"
 											+ "`regDate`=NOW()";
 	public static final String SELECT_USER 			= "SELECT * FROM `User` WHERE `uid`=? AND `pass`=SHA2(?, 256)";
+	public static final String SELECT_USERS 		= "SELECT `uid`,`name`,`nick`,`email`,`hp`,`role`,`zip`,`addr1`,`addr2`,`regip`,`regDate` FROM `User` LIMIT ?, 10";
 	public static final String SELECT_COUNT_UID 	= "SELECT COUNT(*) FROM `User` WHERE `uid`=?";
 	public static final String SELECT_COUNT_NICK 	= "SELECT COUNT(*) FROM `User` WHERE `nick`=?";
 	public static final String SELECT_COUNT_EMAIL 	= "SELECT COUNT(*) FROM `User` WHERE `email`=?";
 	public static final String SELECT_COUNT_HP 		= "SELECT COUNT(*) FROM `User` WHERE `hp`=?";
+	public static final String SELECT_COUNT_USER 	= "SELECT COUNT(*) FROM `User`";
 	
 	// article /////////////////////////////////////////////////////
 	public static final String INSERT_ARTICLE  = "INSERT INTO `Article` SET "
@@ -100,4 +102,15 @@ public class SQL {
 			+ "`orderEtc`=?, "
 			+ "`orderUser`=?, "
 			+ "`orderDate`=NOW() ";
+	public final static String SELECT_ORDER = "SELECT "
+			+ "a.*,"
+			+ "b.pName,"
+			+ "b.thumb1 "
+			+ "FROM `Order` AS a "
+			+ "JOIN `Product` AS b "
+			+ "ON a.orderProduct=b.pNo "
+			+ "LIMIT ?, 10";
+	public final static String SELECT_COUNT_ORDERS_ALL = "SELECT COUNT(*) FROM `Order`";
+	public final static String SELECT_ORDERS_USER = "SELECT * FROM `Order` WHERE `OrderUser`=?";
+	public final static String DELETE_ORDERS = "DELETE FROM `Order` WHERE `orderNo`=?";
 }

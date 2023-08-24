@@ -1,5 +1,60 @@
+<%@page import="kr.farmstory1.dao.UserDAO"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="./_header.jsp" %>
+<%
+	request.setCharacterEncoding("UTF-8");
+	
+	String pg = request.getParameter("pg");
+	String type = request.getParameter("type");
+	if(type == null){
+		type = "0";
+	}
+	
+	UserDAO dao = new UserDAO();
+	
+	// 페이지 관련 변수  선언
+	int start = 0;
+	int currentPage = 1;		
+	int total = dao.selectCountUsersTotal();			// 전체 게시물 갯수
+	int lastPageNum = 0;		// 마지막 페이지 번호
+	int pageGroupCurrent = 1;	
+	int pageGroupStart = 1;
+	int pageGroupEnd = 0;
+	int pageStartNum = 0;
+	
+	// 현재 페이지 계산
+	// /Farmstory1/board/list.jsp?pg=? 의 값을 가져와서 pg에 넣기
+	if(pg != null){
+		currentPage = Integer.parseInt(pg);
+	}
+	
+	// Limit 시작값 계산
+	start = (currentPage - 1) * 10; 
+	
+	// 전체 주문 갯수 조회
+	total = dao.selectCountUsersTotal();
+	
+	// 마지막 페이지 번호 계산
+	if(total % 10 == 0){
+		lastPageNum = (total / 10);
+	}else{
+		lastPageNum = (total / 10) + 1;
+	}
+	
+	// 페이지  그룹 계산
+	pageGroupCurrent = (int)Math.ceil(currentPage / 10.0);
+	pageGroupStart = (pageGroupCurrent - 1) * 10 + 1;
+	pageGroupEnd = pageGroupCurrent * 10;
+	
+	if(pageGroupEnd > lastPageNum){
+		pageGroupEnd = lastPageNum;
+	}
+	
+	// 페이지 시작번호 계산
+	pageStartNum = total - start;
+	List<UserDTO> users = dao.selectUsers(start); 
+%>
 <main>
     <%@ include file="./_aside.jsp" %>
     <section id="orderList">
@@ -21,13 +76,14 @@
                     <th>가입일</th>
                     <th>확인</th>
                 </tr>
+                <% for(UserDTO user : users){ %>
                 <tr>
                     <td><input type="checkbox" name=""/></td>
-                    <td>a101</td>
-                    <td>김유신</td>                            
-                    <td>유신101</td>
-                    <td>yusin101@naver.com</td>
-                    <td>010-1234-1001</td>
+                    <td><%= user.getUid() %></td>
+                    <td><%= user.getName() %></td>                            
+                    <td><%= user.getNick() %></td>
+                    <td><%= user.getEmail() %></td>
+                    <td><%= user.getHp() %></td>
                     <td>
                         <select name="grade">
                             <option>1</option>
@@ -37,9 +93,10 @@
                             <option>5</option>
                         </select>
                     </td>
-                    <td>2023-01-01 13:06:14</td>
+                    <td><%= user.getRegDate() %></td>
                     <td><a href="#" class="showPopup">[상세확인]</a></td>
                 </tr>
+                <% } %>
                 <tr>
                     <td><input type="checkbox" name=""/></td>
                     <td>a102</td>

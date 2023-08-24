@@ -1,6 +1,8 @@
 package kr.farmstory1.dao;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import kr.farmstory1.db.DBHelper;
 import kr.farmstory1.db.SQL;
@@ -71,6 +73,57 @@ public class UserDAO extends DBHelper{
 		}
 		return user;
 	}
+	
+	public List<UserDTO> selectUsers(int start){
+		
+		List<UserDTO> users = new ArrayList<>();
+		
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.SELECT_USERS);
+			psmt.setInt(1, start);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				UserDTO dto = new UserDTO();
+				dto.setUid(rs.getString(1));
+				dto.setName(rs.getString(2));
+				dto.setNick(rs.getString(3));
+				dto.setEmail(rs.getString(4));
+				dto.setHp(rs.getString(5));
+				dto.setRole(rs.getString(6));
+				dto.setZip(rs.getString(7));
+				dto.setAddr1(rs.getString(8));
+				dto.setAddr2(rs.getString(9));
+				dto.setRegip(rs.getString(10));
+				dto.setRegDate(rs.getString(11));
+				users.add(dto);
+			}
+			
+			close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return users;
+	}
+	
+	public int selectCountUsersTotal() {
+		int result = 0;
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.SELECT_COUNT_USER);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	public int selectCountUid(String uid) {
 		int result = 0;
 		try{

@@ -1,4 +1,4 @@
-<%@page import="java.text.DecimalFormat"%>
+<%@page import="kr.farmstory1.db.Utils"%>
 <%@page import="kr.farmstory1.dao.ProductDAO"%>
 <%@page import="kr.farmstory1.dto.ProductDTO"%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
@@ -9,8 +9,6 @@
 	
 	ProductDAO dao = new ProductDAO();
 	ProductDTO dto = dao.selectProduct(pNo);
-	
-	DecimalFormat df = new DecimalFormat("###,###");
 %>
 <script>
 	const price 	= <%= dto.getPrice()%>;
@@ -24,17 +22,11 @@
 			let finalPrice = total + delivery;
 			
 			$('input[name=count]').val(count);
+			$('input[name=total]').val(total);
 			$('input[name=finalPrice]').val(finalPrice);
 			
-			if(total >= 30000){
-				$('.total').text(total.toLocaleString()+'원');
-				$('inpunt[name=total]').val(total);
-			}else{
-				total = total + delivery;
-				$('.total').text(total.toLocaleString()+'원');
-				$('inpunt[name=total]').val(total);
-			}
-			console.log('total : '+ total);
+			$('.total').text(total.toLocaleString()+'원');
+			
 		});
 		
 		// 주문하기
@@ -103,11 +95,7 @@
                     </tr>
                     <tr>
                         <td>합계</td>
-                        <% if(dto.getPrice() >= 30000){ %>
-                        <td class="total"><%= dto.getPriceWithComma() %>원</td>
-                        <% }else{ %>
-                        <td class="total"><%= df.format(dto.getPrice()+dto.getDelivery()) %>원</td>
-                        <% } %>
+                        <td class="total"><%= Utils.comma(dto.getPrice()) %>원</td>
                     </tr>
                 </table>
                 <form id="formOrder" action="/Farmstory1/market/order.jsp" method="post">
@@ -117,8 +105,8 @@
                 	<input type="hidden" name="delivery" 	value="<%= dto.getDelivery()%>">
                 	<input type="hidden" name="price" 		value="<%= dto.getPrice()%>">
                 	<input type="hidden" name="count" 		value="1">
-                	<input class= "total" type="text" name="total" value="<%= dto.getPrice()%>">
-                	<input type="hidden" name="finalPrice" 		value="<%= dto.getPrice()%>">
+                	<input type="hidden" name="total"		value="<%= dto.getPrice()%>">
+                	<input type="hidden" name="finalPrice" 	value="<%= dto.getPrice()%>">
                 </form>
                 
 	            <a href="#" class="btnOrder">
@@ -127,7 +115,7 @@
             </div>
             <h3>상품설명</h3>
             <div class="detail">
-                <img src="/Farmstory1/thumb/<%= dto.getThumb3() %>" alt="">
+                <img src="/Farmstory1/thumb/<%= dto.getThumb3() %>" alt="상세 이미지">
 
             </div>
 
