@@ -64,5 +64,18 @@
 	maxIdle="13"
 	maxWaitMillis="3000"
 	/>
+	
+    <Resource
+	name="jdbc/userdb"
+	auth="Container"
+	type="javax.sql.DataSource"
+	driverClassName="com.mysql.cj.jdbc.Driver"
+	url="jdbc:mysql://3.39.191.39:3306/userdb"
+	username="user"
+	password="Kangys98!!"
+	maxTotal="13"
+	maxIdle="13"
+	maxWaitMillis="3000"
+	/>
 
 </Context>
