@@ -4,31 +4,34 @@
 	<html>
 		<head>
 		<meta charset="UTF-8">
-		<title>user1::list</title>
+		<title>user6::list</title>
 	</head>
 	<body>
-		<h3>User1 목록</h3>
+		<h3>user6 목록</h3>
 		<a href="/Ch10/">메인</a>
-		<a href="/Ch10/user1/register.do">등록</a>
+		<a href="/Ch10/user6/register.do">등록</a>
 		
 		<table border="1">
 			<tr>
-				<th>아이디</th>
 				<th>이름</th>
-				<th>휴대폰</th>
+				<th>성별</th>
 				<th>나이</th>
+				<th>주소</th>
 				<th>관리</th>
 			</tr>
 			<!-- JSTL을 사용해서 반복문 출력 -->
 			<c:forEach var="user" items="${requestScope.users}">
 				<tr>
-					<td>${user.getUid() }</td>
 					<td>${user.getName() }</td>
-					<td>${user.getHp() }</td>
+					<c:choose>
+						<c:when test="${user.gender eq 1}"><td>남자</td></c:when>
+						<c:otherwise><td>여자</td></c:otherwise>
+					</c:choose>
 					<td>${user.getAge() }</td>
+					<td>${user.getAddr() }</td>
 					<td>
-						<a href="/Ch10/user1/modify.do?uid=${user.getUid()}">수정</a>
-						<a href="/Ch10/user1/delete.do?uid=${user.getUid()}">삭제</a>
+						<a href="/Ch10/user6/modify.do?name=${user.getName()}">수정</a>
+						<a href="/Ch10/user6/delete.do?name=${user.getName()}">삭제</a>
 					</td>
 				</tr>
 			</c:forEach>
