@@ -45,9 +45,19 @@ public class UserService{
 	public int selectCountHp(String hp) {
 		return dao.selectCountHp(hp);
 	}
+	public int selectCountEmail(String email) {
+		return dao.selectCountEmail(email);
+	}
+	public int selectCountNameAndEmail(String name, String email) {
+		return dao.selectCountNameAndEmail(name, email);
+	}
 	
-	public UserDTO selectUser(String uid) {
-		return dao.selectUser(uid);
+	public UserDTO selectUser(String uid, String pass) {
+		return dao.selectUser(uid, pass);
+	}
+	
+	public UserDTO selectUserByNameAndEmail(String name, String email) {
+		return dao.selectUserByNameAndEmail(name, email);
 	}
 	
 	public List<UserDTO> selectUsers() {
@@ -92,7 +102,7 @@ public class UserService{
 			}
 		});
 		
-		// 메일 발송
+	////////////////////////////////////////// 메일 발송 /////////////////////////////////////////
 		int status = 0;
 		Message message = new MimeMessage(gmailSession);
 		
@@ -111,7 +121,7 @@ public class UserService{
 		return status;
 	} //sendCodeByEmail end
 	
-	///////////////////////////////////////// 코드 확인 /////////////////////////////////////
+	///////////////////////////////////////// 코드 확인 /////////////////////////////////////////
 	public int confirmCodeByEmail(String code) {
 		if(code.equals(generatedCode)) {
 			logger.info("return 1 ...");

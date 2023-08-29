@@ -2,16 +2,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="./_header.jsp"%>
 <script>
-	window.onload = function(){
+	$(function(){
 		
-		const btnNext = document.querySelector('.btnNext');
+		const terms = $('.terms');
+		const privacy = $('.privacy');
 		
-		btnNext.addEventListener('click', function(e){
-			
-			alert('click');
+		$('.btnNext').click(function(e){
+			e.preventDefault();
+			if(!terms.is(':checked')){
+				alert('이용약관에 동의하셔야 합니다.');
+				return;
+			}else if(!privacy.is(':checked')){
+				alert('개인정보 취급방침에 동의하셔야 합니다.');
+				return;
+			}else{
+				location.href = '/Jboard2/user/register.do';
+			}
 		});
-		
-	};// window onload end
+	});
 </script>
 <main id="user">
     <section class="terms">

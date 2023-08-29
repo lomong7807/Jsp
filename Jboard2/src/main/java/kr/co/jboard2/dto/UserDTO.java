@@ -14,6 +14,7 @@ public class UserDTO {
 	private String addr2;
 	private String regip;
 	private String regDate;
+	private String leaveDate;
 	
 	
 	public String getUid() {
@@ -88,7 +89,12 @@ public class UserDTO {
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
-	
+	public String getLeaveDate() {
+		return leaveDate;
+	}
+	public void setLeaveDate(String leaveDate) {
+		this.leaveDate = leaveDate;
+	}
 	
 	
 }
