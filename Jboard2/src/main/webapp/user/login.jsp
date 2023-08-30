@@ -9,6 +9,10 @@
 		alert('정상적으로 로그아웃 되었습니다.');
 	}else if(success == 101){
 		alert('로그인을 먼저 하셔야 됩니다.');
+	}else if(success == 102){
+		alert('회원가입이 완료되었습니다.');
+	}else if(success == 300){
+		alert('비밀번호가 변경 되었습니다. 다시 로그인 하시기 바랍니다.');
 	}
 	
 </script>

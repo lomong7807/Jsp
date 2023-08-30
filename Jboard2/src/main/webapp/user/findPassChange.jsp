@@ -1,24 +1,44 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="./_header.jsp"%>
+<script src="/Jboard2/js/validation.js"></script>
+<script>
+	window.onload = function(){
+		
+		const btnPassChange = document.getElementById('btnPassChange');
+		const formFindPassChange = document.getElementById('formFindPassChange');
+		// btnPassChange 버튼을 formFindPassChange form의 submit버튼으로 설정 
+		btnPassChange.onclick = function(e){
+			e.preventDefault();
+			
+			if(isPassOk){
+				formFindPassChange.submit();
+			}
+				alert('변경 비밀번호가 유효하지 않거나 일치하지 않습니다.');
+			
+		}// btnPassChange onclick end
+	};//onload end
+</script>
 <main id="user">
     <section class="find findPassChange">
-        <form action="#">
+        <form id="formFindPassChange" action="/Jboard2/user/findPassChange.do" method="POST">
+            <input type="hidden" name="uid" value="${sessionScope.uid}">
             <table border="0">
                 <caption>비밀번호 변경</caption>                        
                 <tr>
                     <td>아이디</td>
-                    <td>honggildong</td>
+                    <td>${uid}</td>
                 </tr>
                 <tr>
                     <td>새 비밀번호</td>
                     <td>
-                        <input type="email" name="pass1" placeholder="새 비밀번호 입력"/>
+                        <input type="password" name="pass1" placeholder="새 비밀번호 입력"/>
                     </td>
                 </tr>
                 <tr>
                     <td>새 비밀번호 확인</td>
                     <td>
-                        <input type="email" name="pass1" placeholder="새 비밀번호 입력"/>
+                        <input type="password" name="pass2" placeholder="새 비밀번호 입력 확인"/>
+                        <span class="passResult"></span>
                     </td>
                 </tr>
             </table>                                        
@@ -30,8 +50,8 @@
         </p>
 
         <div>
-            <a href="./login.html" class="btn btnCancel">취소</a>
-            <a href="./login.html" class="btn btnNext">다음</a>
+            <a href="/Jboard2/user/login.do" class="btn btnCancel">취소</a>
+            <a href="#" id="btnPassChange" class="btn btnNext">비밀번호 변경</a>
         </div>
     </section>
 </main>

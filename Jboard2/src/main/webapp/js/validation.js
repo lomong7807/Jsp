@@ -59,7 +59,7 @@
 				$('.nameResult').text('');
 				isNameOk = true;
 			}else{
-				$('.nameResult').css('color','red').text('유효한 이름이 아닙니다.');
+				$('.nameResult').css('color','red').text('이름을 다시 확인해주세요.');
 				isNameOk = false;
 			}
 		});

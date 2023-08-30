@@ -19,7 +19,8 @@
 
 <main id="user">
     <section class="find findId">
-        <form id="formFindId" action="/Jboard2/user/findIdResult.do" method="GET">
+        <form id="formFindId" action="/Jboard2/user/findIdResult.do" method="POST">
+        	<input type="hidden" name="type" value="FIND_ID"/>
             <table border="0">
                 <caption>아이디 찾기</caption>
                 <tr>

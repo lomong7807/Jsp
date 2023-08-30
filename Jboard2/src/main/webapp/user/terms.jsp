@@ -42,7 +42,6 @@
                 </td>
             </tr>
         </table>
-        
         <div>
             <a href="/Jboard2/user/login.do" class="btn btnCancel">취소</a>
             <a href="/Jboard2/user/register.do" class="btn btnNext">다음</a>

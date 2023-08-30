@@ -9,16 +9,22 @@ $(function(){
 	
 	$('#btnEmailCode').click(function(){
 		
-		const name  = $('input[name=name').val();
+		const type  = $('input[name=type]').val();
+		const uid  = $('input[name=uid]').val();
+		const name  = $('input[name=name]').val();
 		const email = $('input[name=email]').val();
 		
+		console.log('uid : ' + uid);
 		console.log('name : ' + name);
 		console.log('email : ' + email);
 		
 		const jsonData = {
+			"type" : type,
+			"uid" : uid,
 			"name" : name,
 			"email" : email
 		};
+		console.log("jsonData :"+jsonData);
 		
 		if(preventDoubleClick){
 			return;
@@ -27,6 +33,7 @@ $(function(){
 		preventDoubleClick = true;
 		$('.resultEmail').css('color', 'black').text('인증코드 전송 중 입니다. 잠시만 기다려주세요...');
 		$('.resultEmailForId').css('color', 'black').text('인증코드 전송 중 입니다. 잠시만 기다려주세요...');
+		$('.resultEmailForPass').css('color', 'black').text('인증코드 전송 중 입니다. 잠시만 기다려주세요...');
 		
 		console.log('jsonData : ' + jsonData);
 		
@@ -54,12 +61,14 @@ $(function(){
 						if(data.status > 0){
 							console.log('here2');
 							$('.resultEmailForId').css('color', 'green').text('이메일을 확인 후 인증코드를 입력하세요.');
+							$('.resultEmailForPass').css('color', 'green').text('이메일을 확인 후 인증코드를 입력하세요.');
 							$('input[name=auth]').prop('disabled', false);
 						
 						// 중복된 메일은 없지만 메일 발송에 실패했다면
 						}else{
 							console.log('here3');
 							$('.resultEmailForId').css('color', 'red').text('인증코드 전송이 실패했습니다. 잠시후 다시 시도하십시요.');
+							$('.resultEmailForPass').css('color', 'red').text('인증코드 전송이 실패했습니다. 잠시후 다시 시도하십시요.');
 						}
 						
 				}else{
@@ -76,7 +85,8 @@ $(function(){
 						}else{
 							console.log('here6');
 							$('.resultEmail').css('color', 'red').text('인증코드 전송이 실패했습니다. 잠시후 다시 시도하십시오.');
-							$('.resultEmailForId ').css('color', 'red').text('해당하는 사용자, 이메일이 일치하지 않습니다.');
+							$('.resultEmailForId').css('color', 'red').text('해당하는 사용자, 이메일이 일치하지 않습니다.');
+							$('.resultEmailForPass').css('color', 'red').text('해당하는 사용자, 이메일이 일치하지 않습니다.');
 						}	
 					}
 					preventDoubleClick = false;
@@ -101,10 +111,12 @@ $(function(){
 				if(data.result > 0){
 					$('.resultEmail').css('color', 'green').text('이메일 인증이 완료 되었습니다.');
 					$('.resultEmailForId').css('color', 'green').text('이메일 인증이 완료 되었습니다.');
+					$('.resultEmailForPass').css('color', 'green').text('이메일 인증이 완료 되었습니다.');
 					isEmailOk = true;
 				}else{
 					$('.resultEmail').css('color', 'red').text('이메일 인증이 실패 했습니다. 다시 시도하십시오.');
 					$('.resultEmailForId').css('color', 'red').text('이메일 인증이 실패 했습니다. 다시 시도하십시오.');
+					$('.resultEmailForPass').css('color', 'red').text('이메일 인증이 실패 했습니다. 다시 시도하십시오.');
 					$('input[name=email]').attr('readonly',false);
 					isEmailOk = false;
 				}

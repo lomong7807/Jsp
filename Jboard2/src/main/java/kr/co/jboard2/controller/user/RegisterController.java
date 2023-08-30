@@ -53,6 +53,6 @@ public class RegisterController extends HttpServlet{
 		
 		service.insertUser(dto);
 		
-		resp.sendRedirect("/Jboard2/user/login.do?success=200");
+		resp.sendRedirect("/Jboard2/user/login.do?success=102");
 	}
 }

@@ -25,22 +25,47 @@ public class AuthEmailController extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		String type  = req.getParameter("type");
 		String name  = req.getParameter("name");
 		String email = req.getParameter("email");
+		String uid = req.getParameter("uid");
 		
+		System.out.println("타입 :"+type);
+		System.out.println("이름 :"+name);
+		System.out.println("이메일 :"+email);
+		System.out.println("아이디 :"+uid);
+		
+		// result = 중복된 메일이 있는지 확인
 		int result = 0;
+		// status = 메일 발송이 성공적으로 됐는지 확인
 		int status = 0;
 		
-		if(name == null) {
-			// name이 null이란 건 회원가입 할 때라는것
+		if(type.equals("REGISTER")) {
 			// 회원가입 할 때 이메일 인증
 			result = service.selectCountEmail(email);
-			status = service.sendCodeByEmail(email);
-		}else {
+			
+			if(result == 0) {
+				status = service.sendCodeByEmail(email);
+			}
+		}else if(type.equals("FIND_ID")){
 			// 아이디 찾을 때 이메일 인증
 			result = service.selectCountNameAndEmail(name, email);
 			
-			if(result == 0) {
+			if(result == 1) {
+				status = service.sendCodeByEmail(email);
+			}
+		}else if(type.equals("FIND_PASS")){
+			// 비밀번호 찾을 때 이메일 인증
+			result = service.selectCountUidAndEmail(uid, email);
+			
+			if(result == 1) {
+				status = service.sendCodeByEmail(email);
+			}
+		}else if(type.equals("MODIFY")){
+			// 이메일을 수정할 때 이메일 인증
+			result = service.selectCountEmail(email);
+			
+			if(result == 1) {
 				status = service.sendCodeByEmail(email);
 			}
 		}
