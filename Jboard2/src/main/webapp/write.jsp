@@ -3,12 +3,13 @@
 <main id="board">
     <section class="write">
 
-        <form action="#">
+        <form action="/Jboard2/write.do" method="post" enctype="multipart/form-data">
+        	<input type="hidden" name="writer" value="${sessUser.uid}"/>
             <table border="0">
                 <caption>글쓰기</caption>
                 <tr>
                     <th>제목</th>
-                    <td><input type="text" name="title" placeholder="제목을 입력하세요."/></td>
+                    <td><input type="text" name="title" maxlength="40" placeholder="제목을 입력하세요."/></td>
                 </tr>
                 <tr>
                     <th>내용</th>
@@ -19,7 +20,7 @@
                 <tr>
                     <th>파일</th>
                     <td>
-                        <input type="file" name="file"/>
+                        <input type="file" multiple="multiple" name="file"/>
                     </td>
                 </tr>
             </table>

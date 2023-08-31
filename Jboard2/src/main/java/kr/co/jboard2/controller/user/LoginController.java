@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import kr.co.jboard2.dto.UserDTO;
 import kr.co.jboard2.service.UserService;
@@ -20,7 +18,6 @@ public class LoginController extends HttpServlet{
 	private static final long serialVersionUID = 2957314664120531756L;
 
 	private UserService service = UserService.getInstance();
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 아래의 dopost에서 로그인 실패시 가져온 success를 다시 login.jsp로 보내서 alert를 띄워준다.
