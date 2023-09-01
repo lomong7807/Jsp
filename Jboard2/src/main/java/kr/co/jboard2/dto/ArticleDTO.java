@@ -18,6 +18,15 @@ public class ArticleDTO {
 	private String nick;
 	private int total;
 	
+	private FileDTO fileDto;
+	
+	public FileDTO getFileDto() {
+		return fileDto;
+	}
+	public void setFileDto(FileDTO fileDto) {
+		this.fileDto = fileDto;
+	}
+	
 	public String getNick() {
 		return nick;
 	}

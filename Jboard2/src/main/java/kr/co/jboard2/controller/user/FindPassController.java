@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import kr.co.jboard2.dto.UserDTO;
 import kr.co.jboard2.service.UserService;
 @WebServlet("/user/findPass.do")
 public class FindPassController extends HttpServlet{

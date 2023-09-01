@@ -1,11 +1,8 @@
 package kr.co.jboard2.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import kr.co.jboard2.dto.ArticleDTO;
 import kr.co.jboard2.dto.FileDTO;

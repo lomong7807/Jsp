@@ -1,5 +1,6 @@
 package kr.co.jboard2.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ public class FileDAO extends DBHelper{
 		
 		try {
 			conn = getConnection();
-			psmt = conn.prepareStatement(SQL.SELECT_FILE);
+			psmt = conn.prepareStatement(SQL.SELECT_FILE_ANO);
 			psmt.setString(1, ano);
 			rs = psmt.executeQuery();
 			
@@ -47,18 +48,69 @@ public class FileDAO extends DBHelper{
 			}
 			close();
 		} catch (Exception e) {
-			logger.error("selectFile() error : "+e.getMessage());
+			logger.error("selectFile(ANO) error : "+e.getMessage());
 		}
 		
 		return file;
 	}
+	public FileDTO selectFileFno(String fno) {
+		FileDTO file = new FileDTO();
+		
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.SELECT_FILE_FNO);
+			psmt.setString(1, fno);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				file.setFno(rs.getInt(1));
+				file.setAno(rs.getInt(2));
+				file.setOfile(rs.getString(3));
+				file.setSfile(rs.getString(4));
+				file.setDownload(rs.getInt(5));
+				file.setRdate(rs.getString(6));
+			}
+			close();
+		} catch (Exception e) {
+			logger.error("selectFile(FNO) error : "+e.getMessage());
+		}
+		return file;
+	}
+	
 	public List<FileDTO> selectFiles() {
 		return null;
 	}
 	public void updateFile(FileDTO dto) {
 		
 	}
-	public void deleteFile(int fno) {
-		
+	public List<FileDTO> deleteFile(String ano) {
+		List<FileDTO> file = new ArrayList<>();
+		try {
+			conn = getConnection();
+			conn.setAutoCommit(false);
+			psmt1 = conn.prepareStatement(SQL.SELECT_FILE_ANO);
+			psmt1.setString(1, ano);
+			rs = psmt1.executeQuery();
+			while(rs.next()) {
+				FileDTO dto = new FileDTO();
+				dto.setFno(rs.getInt(1));
+				dto.setAno(rs.getInt(2));
+				dto.setOfile(rs.getString(3));
+				dto.setSfile(rs.getString(4));
+				dto.setDownload(rs.getInt(5));
+				dto.setRdate(rs.getString(6));
+				file.add(dto);
+			}
+			
+			psmt = conn.prepareStatement(SQL.DELETE_FILE);
+			psmt.setString(1, ano);
+			psmt.executeUpdate();
+			
+			conn.commit();
+			close();
+		} catch (Exception e) {
+			logger.error("deleteFile() error : "+e.getMessage());
+		}
+		return file;
 	}
 }

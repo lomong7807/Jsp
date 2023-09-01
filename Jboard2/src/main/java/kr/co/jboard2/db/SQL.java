@@ -37,6 +37,7 @@ public class SQL {
 														+ "`addr2`=? "
 														+ "WHERE `uid`=?";
 	public static final String UPDATE_USER_PASS			= "UPDATE `User` SET `pass`=SHA2(?,256) WHERE `uid`=?";
+	
 	public static final String UPDATE_USER_FOR_WITHDRAW	= "UPDATE `User` SET "
 														+ "`pass`=null,"
 														+ "`name`=null,"
@@ -51,43 +52,67 @@ public class SQL {
 														+ "WHERE `uid`=?";
 	
 	/******************************************** Article ********************************************/
-	public static final String INSERT_ARTICLE  			= "INSERT INTO `Article` SET "
-														+ "`title`=?, "
-														+ "`content`=?, "
-														+ "`file`=?, "
-														+ "`writer`=?, "
-														+ "`regip`=?, "
-														+ "`rdate`=NOW()";
+	public static final String INSERT_ARTICLE  					= "INSERT INTO `Article` SET "
+																+ "`title`=?, "
+																+ "`content`=?, "
+																+ "`file`=?, "
+																+ "`writer`=?, "
+																+ "`regip`=?, "
+																+ "`rdate`=NOW()";
 	
 	
-	public static final String INSERT_COMMENT			= "INSERT INTO `Article` SET "
-														+ "`parent`=?, "
-														+ "`content`=?, "
-														+ "`writer`=?, "
-														+ "`regip`=?, "
-														+ "`rdate`=NOW()";
+	public static final String INSERT_COMMENT					= "INSERT INTO `Article` SET "
+																+ "`parent`=?, "
+																+ "`content`=?, "
+																+ "`writer`=?, "
+																+ "`regip`=?, "
+																+ "`rdate`=NOW()";
 	
-	public static final String SELECT_MAX_NO  			= "SELECT MAX(`no`) FROM `Article`";
-	public static final String SELECT_ARTICLE  			= "SELECT * FROM `Article` WHERE `no`=?";
-	public static final String SELECT_ARTICLES 			= "SELECT a.*, b.nick "
-														+ "FROM `Article` AS a "
-														+ "JOIN `User` AS b "
-														+ "ON a.writer = b.uid "
-														+ "WHERE `parent`=0 "
-														+ "ORDER BY `no` DESC "
-														+ "LIMIT ?, 10";
-	public static final String SELECT_COMMENTS 			= "SELECT a.*, b.nick "
-														+ "FROM `Article` AS a "
-														+ "JOIN `User` AS b "
-														+ "ON a.writer = b.uid "
-														+ "WHERE `parent`=? ";
-	public static final String SELECT_COUNT_TOTAL 		= "SELECT COUNT(*) FROM `Article` WHERE `parent`=0";
+	public static final String SELECT_MAX_NO  					= "SELECT MAX(`no`) FROM `Article`";
+	
+	public static final String SELECT_ARTICLE  					= "SELECT * FROM `Article` WHERE `no`=?";
+	/*
+	public static final String SELECT_ARTICLE  			= "SELECT * FROM `Article` AS a "
+														+ "left JOIN `File` AS b "
+														+ "ON a.`no`=b.ano "
+														+ "WHERE `no`=6";
+	*/
+	public static final String SELECT_ARTICLES 					= "SELECT a.*, b.nick "
+																+ "FROM `Article` AS a "
+																+ "JOIN `User` AS b "
+																+ "ON a.writer = b.uid "
+																+ "WHERE `parent`=0 "
+																+ "ORDER BY `no` DESC "
+																+ "LIMIT ?, 10";
+
+	public static final String SELECT_ARTICLES_FOR_SEARCH		= "SELECT a.*, b.nick "
+																+ "FROM `Article` AS a "
+																+ "JOIN `User` AS b "
+																+ "ON a.writer = b.uid "
+																+ "WHERE `parent`=0 AND `title` LIKE ? "
+																+ "ORDER BY `no` DESC "
+																+ "LIMIT ?, 10";
+
+	public static final String SELECT_COMMENTS 					= "SELECT a.*, b.nick "
+																+ "FROM `Article` AS a "
+																+ "JOIN `User` AS b "
+																+ "ON a.writer = b.uid "
+																+ "WHERE `parent`=? ";
+	
+	public static final String SELECT_COUNT_TOTAL 				= "SELECT COUNT(*) FROM `Article` WHERE `parent`=0";
+	
+	public static final String SELECT_COUNT_TOTAL_FOR_SEARCH	= "SELECT COUNT(*) FROM `Article` WHERE `parent`=0  AND `title` LIKE ?";
 	
 	public static final String UPDATE_ARTICLE 					= "UPDATE `Article` SET `title`=?, `content`=? WHERE `no`=?";
+	
 	public static final String DELETE_ARTICLE 					= "DELETE FROM `Article` WHERE `no`=? OR `parent`=?";
+	
 	public static final String UPDATE_ARTICLE_FOR_COMMENT_MINUS = "UPDATE `Article` SET `comment`=`comment` - 1 WHERE `no`=?";
-	public static final String UPDATE_ARTICLE_FOR_COMMENT 		= "UPDATE `Article` SET `comment`= `comment` + 1 WHERE `no`=?";
+	
+	public static final String UPDATE_ARTICLE_FOR_COMMENT_PLUS	= "UPDATE `Article` SET `comment`= `comment` + 1 WHERE `no`=?";
+	
 	public static final String DELETE_COMMENT 					= "DELETE FROM `Article` WHERE `no`=?";
+	
 	public static final String UPDATE_COMMENT 					= "UPDATE `Article` SET `content`=? WHERE `no`=?";
 	
 	/******************************************** File ********************************************/
@@ -96,11 +121,15 @@ public class SQL {
 																+ "`oriName`=?,"
 																+ "`newName`=?, "
 																+ "`rdate`=NOW()";
-	public static final String SELECT_FILE						= "SELECT b.* FROM `Article` AS a "
+	
+	public static final String SELECT_FILE_ANO					= "SELECT b.* FROM `Article` AS a "
 																+ "JOIN `File` AS b "
 																+ "ON a.`no`=b.ano "
 																+ "WHERE b.ano=?";
 	
+	public static final String SELECT_FILE_FNO					= "SELECT * FROM `File` WHERE `fno`=?";
+	
+	public static final String DELETE_FILE						= "DELETE FROM `File` WHERE `ano`=?";
 	
 	
 	

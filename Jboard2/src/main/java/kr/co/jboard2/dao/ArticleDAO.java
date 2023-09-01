@@ -70,6 +70,18 @@ public class ArticleDAO extends DBHelper{
 				article.setWriter(rs.getString(9));
 				article.setRegip(rs.getString(10));
 				article.setRdate(rs.getString(11));
+				/*
+				// 파일 정보
+				FileDTO fileDto = new FileDTO();
+				fileDto.setFno(rs.getInt(12));
+				fileDto.setAno(rs.getInt(13));
+				fileDto.setOfile(rs.getString(14));
+				fileDto.setSfile(rs.getString(15));
+				fileDto.setDownload(rs.getInt(16));
+				fileDto.setRdate(rs.getInt(17));
+				
+				article.setFileDto(fileDto);
+				*/
 			}
 			close();
 			
@@ -79,13 +91,19 @@ public class ArticleDAO extends DBHelper{
 		
 		return article;
 	}
-	public List<ArticleDTO> selectArticles(int start) {
+	public List<ArticleDTO> selectArticles(int start, String search) {
 		List<ArticleDTO> articles = new ArrayList<>();
 		
 		try {
 			conn = getConnection();
-			psmt = conn.prepareStatement(SQL.SELECT_ARTICLES);
-			psmt.setInt(1, start);
+			if(search == null) {
+				psmt = conn.prepareStatement(SQL.SELECT_ARTICLES);
+				psmt.setInt(1, start);
+			}else {
+				psmt = conn.prepareStatement(SQL.SELECT_ARTICLES_FOR_SEARCH);
+				psmt.setString(1, "%"+search+"%");
+				psmt.setInt(2, start);
+			}
 			rs = psmt.executeQuery();
 			
 			while(rs.next()) {
@@ -111,14 +129,18 @@ public class ArticleDAO extends DBHelper{
 		}
 		return articles;
 	}
-	public int selectCountTotal() {
+	public int selectCountTotal(String search) {
 		int total = 0;
 		
 		try {
 			conn = getConnection();
-			psmt = conn.prepareStatement(SQL.SELECT_COUNT_TOTAL);
+			if(search == null) {
+				psmt = conn.prepareStatement(SQL.SELECT_COUNT_TOTAL);
+			}else {
+				psmt = conn.prepareStatement(SQL.SELECT_COUNT_TOTAL_FOR_SEARCH);
+				psmt.setString(1, "%"+search+"%");
+			}
 			rs = psmt.executeQuery();
-			
 			if(rs.next()) {
 				total = rs.getInt(1);
 			}
@@ -130,10 +152,25 @@ public class ArticleDAO extends DBHelper{
 	}
 	
 	public void updateArticle(ArticleDTO dto) {}
-	public void deleteArticle(String no) {}
+	public void deleteArticle(String no) {
+		
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.DELETE_ARTICLE);
+			psmt.setString(1, no);
+			psmt.setString(2, no);
+			psmt.executeUpdate();
+			
+			close();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/************************************* Comment *************************************/
-	public void insertComment(ArticleDTO dto) {
+	public int insertComment(ArticleDTO dto) {
+		int result = 0;
 		try {
 			conn = getConnection();
 			psmt = conn.prepareStatement(SQL.INSERT_COMMENT);
@@ -141,11 +178,12 @@ public class ArticleDAO extends DBHelper{
 			psmt.setString(2, dto.getContent());
 			psmt.setString(3, dto.getWriter());
 			psmt.setString(4, dto.getRegip());
-			psmt.executeUpdate();
+			result = psmt.executeUpdate();
 			close();
 		} catch (Exception e) {
 			logger.error("insertComment() error : "+e.getMessage());
 		}
+		return result;
 	}
 	public ArticleDTO selectComment(String no) {
 		return null;
@@ -185,6 +223,45 @@ public class ArticleDAO extends DBHelper{
 		
 		return comments;
 	}
-	public void updateComment(ArticleDTO dto) {}
-	public void deleteComment(String no) {}
+	public void updateArticleForComment(ArticleDTO dto) {}
+	
+	public void updateArticleForCommentPlus(String no) {
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.UPDATE_ARTICLE_FOR_COMMENT_PLUS);
+			psmt.setString(1, no);
+			psmt.executeUpdate();
+			close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateArticleForCommentMinus(String no) {
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.UPDATE_ARTICLE_FOR_COMMENT_MINUS);
+			psmt.setString(1, no);
+			psmt.executeUpdate();
+			close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public int deleteComment(String no) {
+		int result = 0;
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.DELETE_COMMENT);
+			psmt.setString(1, no);
+			result = psmt.executeUpdate();
+			close();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 }

@@ -27,14 +27,17 @@ public class ListController extends HttpServlet{
 		// 현재 세션 가져오기
 		HttpSession session = req.getSession();
 		UserDTO sessUser = (UserDTO)session.getAttribute("sessUser");
-				
+		
+		// 데이터 수신
 		String pg = req.getParameter("pg");
+		String search = req.getParameter("search");
 		
 		// 현재 페이지 번호
 		int currentPage = service.getCurrentPage(pg);
 		
 		// 전체 게시물 갯수
-		int total = service.selectCountTotal();
+		// 검색 시에 페이지 계산을 위해 search를 넣어서 total 값을 가져온다.
+		int total = service.selectCountTotal(search);
 		
 		// 마지막 페이지 번호
 		int lastPageNum = service.getLastPageNum(total);
@@ -49,7 +52,7 @@ public class ListController extends HttpServlet{
 		int start = service.getStartNum(currentPage);
 		
 		// 글 조회
-		List<ArticleDTO> articles = service.selectArticles(start);
+		List<ArticleDTO> articles = service.selectArticles(start, search);
 		
 		if(sessUser != null) {
 			req.setAttribute("articles", articles);

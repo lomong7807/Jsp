@@ -35,16 +35,10 @@ public class ViewController extends HttpServlet{
 			
 			// 글 조회
 			ArticleDTO article 		 = aService.selectArticle(no);
+			// 댓글 조회
 			List<ArticleDTO> comments= aService.selectComments(no);
+			// 파일 조회
 			FileDTO file 	   		 = fService.selectFile(no);
-			
-			System.out.println(file.getFno());
-			System.out.println(file.getAno());
-			System.out.println(file.getOfile());
-			System.out.println(file.getSfile());
-			System.out.println(file.getDownload());
-			System.out.println(file.getRdate());
-			
 			
 			req.setAttribute("article", article);
 			req.setAttribute("comments", comments);

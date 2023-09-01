@@ -18,13 +18,16 @@ public enum FileService {
 	public FileDTO selectFile(String ano) {
 		return dao.selectFile(ano);
 	}
+	public FileDTO selectFileFno(String fno) {
+		return dao.selectFileFno(fno);
+	}
 	public List<FileDTO> selectFiles() {
 		return dao.selectFiles();
 	}
 	public void updateFile(FileDTO dto) {
 		dao.updateFile(dto);
 	}
-	public void deleteFile(int fno) {
-		dao.deleteFile(fno);
+	public List<FileDTO> deleteFile(String ano) {
+		return dao.deleteFile(ano);
 	}
 }
