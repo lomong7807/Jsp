@@ -23,10 +23,13 @@ public class LoginController extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		String success = req.getParameter("success");
+		req.setAttribute("success", success);
 		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/user/login.jsp");
 		dispatcher.forward(req, resp);
 	}
+
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,15 +37,17 @@ public class LoginController extends HttpServlet{
 		String uid = req.getParameter("uid");
 		String pass = req.getParameter("pass");
 		
+		System.out.println("login uid : "+uid);
+		System.out.println("login pass : "+pass);
+		
 		UserDTO user = service.selectUser(uid, pass);
 		
-		if(user != null) {
+		if(user != null){
 			HttpSession session = req.getSession();
-			
 			session.setAttribute("sessUser", user);
 
-			resp.sendRedirect("/Farmstory2/index.do");
-		}else {
+			resp.sendRedirect("/Farmstory2");
+		}else{
 			resp.sendRedirect("/Farmstory2/user/login.do?success=100");
 		}
 		

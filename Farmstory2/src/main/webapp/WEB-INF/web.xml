@@ -22,12 +22,32 @@
   	</auth-constraint>
   </security-constraint>
   
-  <security-constraint>
-  	<web-resource-collection>
-  		<web-resource-name>free pages</web-resource-name> <!-- 보안 해제 -->
-  		<url-pattern>/index.jsp</url-pattern> <!-- index 페이지에 대해서만 -->
-  	</web-resource-collection>
-  </security-constraint>
+  <!-- 
+  	- 시작 페이지 index.jsp 설정하지 않음
+  	- controller.IndexController를 통한 기본 메인페이지 출력
+  -->
+  
+  <!-- 로그인 여부 체크 필터 등록 -->
+  <filter>
+  	<filter-name>CheckLoginFilter</filter-name>
+  	<filter-class>kr.co.farmstory2.filter.CheckLoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>CheckLoginFilter</filter-name>
+  	<url-pattern>/board/write.do</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+  	<filter-name>CheckLoginFilter</filter-name>
+  	<url-pattern>/board/view.do</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+  	<filter-name>CheckLoginFilter</filter-name>
+  	<url-pattern>/board/modify.do</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+  	<filter-name>CheckLoginFilter</filter-name>
+  	<url-pattern>/board/delete.do</url-pattern>
+  </filter-mapping>
   
   <!-- 인코딩 필터 등록 -->
   <filter>

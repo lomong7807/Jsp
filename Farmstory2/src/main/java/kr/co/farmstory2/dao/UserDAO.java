@@ -36,7 +36,7 @@ public class UserDAO extends DBHelper{
 		}
 	}
 	public UserDTO selectUser(String uid, String pass) {
-		UserDTO dto = new UserDTO();
+		UserDTO dto = null;
 		
 		try {
 			conn = getConnection();
@@ -46,6 +46,7 @@ public class UserDAO extends DBHelper{
 			rs = psmt.executeQuery();
 			
 			if(rs.next()) {
+				dto = new UserDTO();
 				dto.setUid(rs.getString(1));
 				dto.setPass(rs.getString(2));
 				dto.setName(rs.getString(3));

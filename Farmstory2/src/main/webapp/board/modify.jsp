@@ -4,21 +4,21 @@
 			<section class="modify">
 			    <h3>글수정</h3>
 			    <article>
-			        <form action="#" method="post">
+			        <form action="${ctxPath}/board/modify.do" method="post">
 			            <table>
 			                <tr>
 			                    <td>제목</td>
-			                    <td><input type="text" name="title" value="제목" placeholder="제목을 입력하세요."/></td>
+			                    <td><input type="text" name="title" value="${article.title}" placeholder="제목을 입력하세요."/></td>
 			                </tr>
 			                <tr>
 			                    <td>내용</td>
 			                    <td>
-			                        <textarea name="content">내용</textarea>
+			                        <textarea name="content">${article.content}</textarea>
 			                    </td>
 			                </tr>
 			                <tr>
 			                    <td>첨부</td>
-			                    <td><input type="file" name="file"/></td>
+			                    <td><input type="file" name="file"/>${file.ofile}</td>
 			                </tr>
 			            </table>
 			            <div>

@@ -31,6 +31,7 @@ public class SQL {
 			+ "`cate`=?,"
 			+ "`title`=?, "
 			+ "`content`=?, "
+			+ "`file`=?, "
 			+ "`writer`=?, "
 			+ "`regip`=?, "
 			+ "`rdate`=NOW()";
@@ -48,6 +49,7 @@ public class SQL {
 			+ "LIMIT ?, 10";
 	public static final String UPDATE_ARTICLE = "UPDATE `Article` SET `title`=?, `content`=? WHERE `no`=?";
 	public static final String SELECT_COUNT_TOTAL = "SELECT COUNT(*) FROM `Article` WHERE `parent`=0 AND `cate`=?";
+	public static final String SELECT_MAX_NO  					= "SELECT MAX(`no`) FROM `Article`";
 	public static final String SELECT_LATEST = "SELECT `no`,`title`,`rdate`  FROM `Article` WHERE `parent`=0 AND `cate`=? Order BY `no` DESC LIMIT ?";
 	
 	//********************************************* Comment *********************************************//
@@ -65,7 +67,7 @@ public class SQL {
 	public static final String UPDATE_COMMENT = "UPDATE `Article` SET `content`=? WHERE `no`=?";
 	public static final String DELETE_COMMENT = "DELETE FROM `Article` WHERE `no`=?";
 	public static final String UPDATE_ARTICLE_FOR_COMMENT_MINUS = "UPDATE `Article` SET `comment`=`comment` - 1 WHERE `no`=?";
-	public static final String UPDATE_ARTICLE_FOR_COMMENT = "UPDATE `Article` SET `comment`= `comment` + 1 WHERE `no`=?";
+	public static final String UPDATE_ARTICLE_FOR_COMMENT_PLUS = "UPDATE `Article` SET `comment`= `comment` + 1 WHERE `no`=?";
 	
 	//********************************************* Product *********************************************//
 	public final static String INSERT_PRODUCT = "INSERT INTO `Product` SET "
@@ -113,4 +115,22 @@ public class SQL {
 	public final static String SELECT_COUNT_ORDERS_ALL = "SELECT COUNT(*) FROM `Order`";
 	public final static String SELECT_ORDERS_USER = "SELECT * FROM `Order` WHERE `OrderUser`=?";
 	public final static String DELETE_ORDERS = "DELETE FROM `Order` WHERE `orderNo`=?";
+	
+	
+	//********************************************* File *********************************************//
+	public static final String INSERT_FILE 						= "INSERT INTO `file` SET "
+			+ "`ano`=?,"
+			+ "`oName`=?,"
+			+ "`sName`=?, "
+			+ "`rdate`=NOW()";
+
+	public static final String SELECT_FILE_ANO					= "SELECT b.* FROM `Article` AS a "
+				+ "JOIN `file` AS b "
+				+ "ON a.`no`=b.ano "
+				+ "WHERE b.ano=?";
+	
+	public static final String SELECT_FILE_FNO					= "SELECT * FROM `file` WHERE `fno`=?";
+	
+	public static final String DELETE_FILE						= "DELETE FROM `file` WHERE `ano`=?";
+	
 }

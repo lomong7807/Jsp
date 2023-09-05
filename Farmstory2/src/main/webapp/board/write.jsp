@@ -4,10 +4,10 @@
     <section class="write">
         <h3>글쓰기</h3>
         <article>
-            <form action="#" method="post">
-            	<input type="hidden" name="writer" readonly value="">
-            	<input type="hidden" name="group" readonly value="">
-            	<input type="hidden" name="cate" readonly value="">
+            <form action="${ctxPath}/board/write.do" method="post" enctype="multipart/form-data">
+            	<input type="hidden" name="writer" readonly value="${sessUser.uid}">
+            	<input type="hidden" name="group" readonly value="${group}">
+            	<input type="hidden" name="cate" readonly value="${cate}">
                 <table>
                     <tr>
                         <td>제목</td>
@@ -21,7 +21,7 @@
                     </tr>
                     <tr>
                         <td>첨부</td>
-                        <td><input type="file" name="file"/></td>
+                        <td><input type="file" multiple="multiple" name="file"/></td>
                     </tr>
                 </table>
                 <div>

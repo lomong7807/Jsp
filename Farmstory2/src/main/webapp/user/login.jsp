@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file ="../_header.jsp" %>
-<link rel="stylesheet" href="/Farmstory2/user/css/style.css"/>
 <div id="user">
     <section class="login">
          <form action="${ctxPath}/user/login.do" method="post">
@@ -25,7 +24,7 @@
              <p>
                  아직 회원이 아니시면 회원으로 가입하세요.
              </p>
-             <a href="/Farmstory2/user/terms.do">회원가입</a>
+             <a href="${ctxPath}/user/terms.do">회원가입</a>
          	<div>
     <!-- 
     <h1>로그인</h1>

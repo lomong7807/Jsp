@@ -16,26 +16,32 @@
 			                <th>날짜</th>
 			                <th>조회</th>
 			            </tr>
+			            <c:forEach var="article" items="${articles}">
 			            <tr>
-			                <td>순서</td>
-			                <td><a href="./view.do?group=${group}&cate=${cate}">제목입니다.</a>&nbsp;[3]</td>
-			                <td>닉네임</td>
-			                <td>날짜</td>
-			                <td>조회수</td>
+			                <td>${pageStartNum = pageStartNum - 1}</td>
+			                <td><a href="./view.do?no=${article.no}&group=${group}&cate=${article.cate}">${article.title}</a>&nbsp;[${article.comment}]</td>
+			                <td>${article.nick}</td>
+			                <td>${article.rdate}</td>
+			                <td>${article.hit}</td>
 			            </tr>
+			            </c:forEach>
 			        </table>
 			    </article>
 			
 		        <!-- 페이지 네비게이션 -->
 			    <div class="paging">
-			    	<a href="/Farmstory1/board/list.jsp" class="prev">처음</a>
-			        <a href="/Farmstory1/board/list.jsp" class="prev">이전</a>
-			        <a href="/Farmstory1/board/list.jsp"></a>
-			        <a href="/Farmstory1/board/list.jsp" class="next">다음</a>
-			        <a href="/Farmstory1/board/list.jsp" class="next">마지막</a>
-			    </div>
+		        	<c:if test="${pageGroupStart > 1}">
+		            	<a href="${ctxPath}/board/list.do?group=${group}&cate=${cate}&pg=${pageGroupStart - 1}" class="prev">이전</a>
+		            </c:if>
+		            <c:forEach var="i" begin="${pageGroupStart}" end="${pageGroupEnd}">
+		            	<a href="${ctxPath}/board/list.do?group=${group}&cate=${cate}&pg=${i}&" class="num ${currentPage == i?'current':'off'}">${i}</a>
+		            </c:forEach>
+		            <c:if test="${pageGroupEnd < lastPageNum}">
+		            	<a href="${ctxPath}/board/list.do?group=${group}&cate=${cate}&pg=${pageGroupEnd + 1}" class="next">다음</a>
+		            </c:if>
+		        </div>
 			    <!-- 글쓰기 버튼 -->
-			    <a href="./write.jsp" class="btnWrite">글쓰기</a>
+			    <a href="./write.do?group=${group}&cate=${cate}" class="btnWrite">글쓰기</a>
 			</section>
 			
 	   		<!-- 내용 끝 -->
