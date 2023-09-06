@@ -4,52 +4,71 @@
 <script>
 	$(function(){
 		
+		/////////////////////////////////////////////////////////////////////
+		////////////////////////    댓글 삭제   ///////////////////////////////
+		/////////////////////////////////////////////////////////////////////
 		// 댓글 삭제(동적 생성 이벤트 구현)
 		// 페이지에서 작성된 댓글에 대한 삭제 이벤트는 구현되지 않기때문에 동적 생성 이벤트로 구현해야 한다.
-		$(document).on('click', '.removeComment', function(e){
+		$(document).on('click', '.remove', function(e){
 			e.preventDefault();
-			alert('삭제');
+			//alert('삭제');
 			
 			const no = $(this).data('no');
 			const parent = $(this).data('parent');
 			const article = $(this).parent().parent();
 			
 			console.log('no : '+ no);
+			console.log('parent : '+ parent);
 			
 			const jsonData ={
 					"kind": "REMOVE",
 					"no" : no,
-					"parent " : parent
+					"parent" : parent,
 			}
 			
 			if(confirm('정말 삭제하시겠습니까?') == true){
 				$.ajax({
 					url: '/Farmstory2/comment.do',
-					type: 'get',
+					type: 'post',
 					data: jsonData,
 					dataType: 'json',
 					success: function(data){
-						
+						console.log(data.result);
+						console.log(data.parentComment);
+						const parentComment = data.parentComment;
 						// 삭제에 성공하면
 						if(data.result > 0){
-							alert('댓글이 삭제되었습니다.');
 							
+							alert('댓글이 삭제되었습니다.');
 							// 화면처리
 							article.remove();
+							
+							const empty = $('.empty');
+							if(parentComment == 0){
+								const article = `<p class="empty">등록된 댓글이 없습니다.</p>`;
+								$('.commentList').append(article);
+							}
 						}
 					}
 				}); //ajax end
 			} // confirm
 		})//removeComment end
 		
-		
+		/////////////////////////////////////////////////////////////////////
+		////////////////////////    댓글 입력   ///////////////////////////////
+		/////////////////////////////////////////////////////////////////////
 		$('#btnComment').click(function(e){
 			e.preventDefault();
-			alert('click');
 			
-			const parent = $('#formComment > input[name=parent]').val();
-			const content = $('#formComment > textarea[name=commentContent]').val();
-			const writer = $('#formComment > input[name=writer]').val();
+			if($('#formComment > textarea[name=commentContent]').val().length === 0){
+				alert('내용을 입력하세요.');
+				return;
+			}
+			//alert('click');
+			
+			const parent = $('#formComment > input[name=parent]').val(); // refboardno
+			const content = $('#formComment > textarea[name=commentContent]').val(); // replycontents
+			const writer = $('#formComment > input[name=writer]').val(); 
 			
 			console.log("content : "+content);
 			
@@ -69,7 +88,9 @@
 				success: function(data){
 					console.log(data);
 					if(data.result > 0){
-						
+						const maxNo = data.maxNo;
+						const parent = data.parent;
+						const parentComment = data.parentComment;
 						const dt = new Date();
 						const year = dt.getFullYear().toString().substr(2, 4);
 						const month = dt.getMonth()+1;
@@ -77,18 +98,22 @@
 						const now = year + "-"+month+"-"+date;
 						
 						const article = `<article>
+											<input type="hidden" name="no" value=`+maxNo+`>
 											<span class='nick'>${sessUser.nick}</span>
 											<span class='date'>`+now+`</span>
-											<p class='content'>`+content+`</p>
+											<textarea class='content' readonly>`+content+`</textarea>
 											<div>
-												<a href='#' class='remove'>삭제</a>
-												<a href='#' class='modify'>수정</a>
+												<a href='#' class='remove' data-no=`+maxNo+` data-parent=`+parent+` data-parentComment=`+parentComment+`>삭제</a>
+												<a href='#' class='cancle' data-no=`+maxNo+` data-parent=`+parent+`>취소</a>
+												<a href='#' class='modify' data-no=`+maxNo+` data-parent=`+parent+`>수정</a>
 											</div>
 										</article>`;
 										
 						$('.commentList').append(article);
+						$('.cancle').hide();
+						// 댓글 입력 완료시 댓글 입력창 비움
 						$('#formComment > textarea[name=commentContent]').val('');
-						
+						// 입력된 댓글이 없으면 등록된 댓글이 없다는 댓글창 띄움
 						const empty = $('.empty');
 						
 						if(empty.is(':visible')){
@@ -99,9 +124,91 @@
 					}
 				}
 			}); //ajax end
-		})// btnComment click end
-	})//end
+		})// 댓글 입력 end
+		
+		/////////////////////////////////////////////////////////////////////
+		////////////////////////    댓글 수정   ///////////////////////////////
+		/////////////////////////////////////////////////////////////////////
+		// 댓글 수정버튼을 누른다.
+		$(document).on('click', '.modify', function(e){
+			e.preventDefault();
+			
+			// txt = this = 수정버튼 
+			const txt = $(this).text();
+			
+			// txt의 이름이 '수정'이라고 돼있으면
+			if(txt == '수정'){
+				
+				// 수정버튼의 부모의 이전 태그에 'modi' 클래스를 추가한다. 
+				$(this).parent().prev().addClass('modi');
+				//readonly 해제
+				$(this).parent().prev().attr('readonly', false);
+				// 수정버튼의 부모의 이전 태그인 textarea에 포커스가 맞춰진다.
+				$(this).parent().prev().focus();
+				// 수정버튼의 이름이 '수정완료'로 바뀐다.
+				$(this).text('수정완료');
+				// 수정버튼의 이전 태그(취소)가 보인다.
+				$(this).prev().show();
+			
+			// 수정버튼의 이름이 현재 '수정완료'라고 돼있으면
+			}else if(txt == '수정완료'){
+				
+				// '수정완료' 클릭했을때 confirm을 받는다.
+				if(confirm('정말 수정 하시겠습니까?')){
+					
+					const content = $(this).parent().prev().val();
+					const no = $(this).parent().parent().children().first().val();
+					
+					console.log("modiContent : "+content);
+					
+					const jsonData = {
+							"no" : no,
+							"content" : content
+					};
+					
+					$.ajax({
+						url: '/Farmstory2/comment.do',
+						type: 'get',
+						data: jsonData,
+						dataType: 'json',
+						success: function(data){
+							console.log(data.result);
+							// 댓글 수정에 성공하면
+							if(data.result > 0){
+								alert('댓글이 수정되었습니다.');
+							}
+						}
+					}); //ajax end
+					
+					// 수정모드 해제
+					$(this).parent().prev().removeClass('modi');
+					$(this).parent().prev().attr('readonly', true);
+					$(this).text('수정');
+					$(this).prev().hide();
+				} // confirm end
+			} // else if end
+		}); // modify click end
+		
+		/////////////////////////////////////////////////////////////////////
+		////////////////////////    수정 취소  ////////////////////////////////
+		/////////////////////////////////////////////////////////////////////
+		$(document).on('click', '.cancle', function(e){
+			e.preventDefault();
+			alert('cancle');
+			
+			const prevContent = $(this).parent().prev().text();
+			console.log(prevContent);
+			
+			$(this).parent().prev().val(prevContent);
+			$(this).parent().prev().removeClass('modi');
+			$(this).parent().prev().attr('readonly', true);
+			$(this).next().text('수정');
+			$(this).hide();
+		});
+	})// end
 </script>
+
+
     <section class="view">
         <h3>글보기</h3>
         <input type="text" name="writer" readonly value="작성자 : ${article.nick}">
@@ -137,26 +244,21 @@
             <article class="comment">
 	            	<input type="hidden" name="no" value="${comment.no}">
 	            	<input type="hidden" name="parent" value="${comment.parent}">
-	                <span>
-	                    <span class="nick">${comment.nick}</span>
-	                    <span class="date">${comment.rdate}</span>
-	                </span>
-	                <textarea name="comment" readonly>${comment.content}</textarea>
-	                
+                    <span class="nick">${comment.nick}</span>
+                    <span class="date">${comment.rdate}</span>
+	                <textarea class="content" name="content" readonly>${comment.content}</textarea>
 	                <!-- 현재 이용자가 댓글 작성자와 동일한지 확인하여 삭제와 수정을 보이게끔 한다. -->
 	                <div>
 	                	<!-- for문 안에서 반복되기 때문에 id가 반복되면 안돼서 class로 사용 -->
-	                    <a href="#" data-no="${comment.no}" data-parent="${comment.parent}" class="removeComment">삭제</a>
-	                    
-	                    <a href="${ctxPath}/board/view.jsp" class="can">취소</a>
-	                    <a href="#" class="mod">수정</a> <!-- AJAX 처리해야됨 -->
+	                    <a href="#" data-no="${comment.no}" data-parent="${comment.parent}" data-parentComment="${article.comment}" class="remove">삭제</a>
+	                    <a href="#" class="cancle">취소</a>
+	                    <a href="#" data-no="${comment.no}" class="modify">수정</a> <!-- AJAX 처리해야됨 -->
 	                </div>
-                </form>
             </article>
             </c:forEach>
             
            	<!-- 등록된 댓글이 없다면 아래를 출력 -->
-           	<c:if test="${comments.size()==0}">
+           	<c:if test="${article.comment==0}">
            	<p class="empty">등록된 댓글이 없습니다.</p>
            	</c:if>
         </section>

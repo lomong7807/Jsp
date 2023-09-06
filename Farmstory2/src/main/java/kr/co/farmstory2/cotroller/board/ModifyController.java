@@ -46,4 +46,28 @@ public class ModifyController extends HttpServlet{
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/board/modify.jsp");
 		dispatcher.forward(req, resp);
 	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		String title = req.getParameter("title");
+		String content = req.getParameter("content");
+		String file = req.getParameter("file");
+		String group = req.getParameter("group");
+		String cate = req.getParameter("cate");
+		String no = req.getParameter("no");
+		
+		ArticleDTO dto = new ArticleDTO();
+		dto.setTitle(title);
+		dto.setContent(content);
+		dto.setNo(no);
+		
+		System.out.println("modify title : "+title);
+		System.out.println("modify title : "+content);
+		System.out.println("modify no : "+no);
+		
+		aService.updateArticle(dto);
+		
+		resp.sendRedirect("/Farmstory2/board/view.do?group="+group+"&cate="+cate+"&no="+no);
+	}
 }

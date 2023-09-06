@@ -25,26 +25,20 @@ public class CommentController extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		int modifyResult = 0;
 		
-		String kind = req.getParameter("kind");
 		String no = req.getParameter("no");
-		String parent = req.getParameter("parent");
+		String content = req.getParameter("content");
+
+		System.out.println("modifyComment no : "+ no);
+		System.out.println("modifyComment content : "+ content);
 		
-		logger.debug("no : "+no);
-		
-		int result = 0;
-		
-		switch(kind) {
-			case "REMOVE" :
-				result = service.deleteComment(no);
-				service.updateArticleForCommentMinus(no);
-		}
+		modifyResult = service.updateComment(no, content); 
 		
 		//JSON 출력
 		JsonObject json = new JsonObject();
-		json.addProperty("result", result);
+		json.addProperty("result", modifyResult);
 		resp.getWriter().print(json);
-		
 	}
 	
 	@Override
@@ -55,28 +49,58 @@ public class CommentController extends HttpServlet{
 		String content = req.getParameter("content");
 		String regip = req.getRemoteAddr();
 		
-		System.out.println("comment parent : "+parent);
-		System.out.println("comment writer : "+writer);
-		System.out.println("comment content : "+content);
-		System.out.println("comment regip : "+regip);
+		if(writer == null) {
+			int deleteResult = 0;
+			int parentComment = 0;
+			String kind = req.getParameter("kind");
+			String no = req.getParameter("no");
+			
+			logger.debug("no : "+no);
+			
+			switch(kind) {
+				case "REMOVE" :
+					deleteResult = service.deleteComment(no);
+					
+					System.out.println("comment parent : "+parent);
+					service.updateArticleForCommentMinus(parent);
+					parentComment = service.selectArticleComment(parent);
+			}
+			
+			//JSON 출력
+			JsonObject json = new JsonObject();
+			json.addProperty("result", deleteResult);
+			json.addProperty("parentComment", parentComment);
+			resp.getWriter().print(json);
+		}else {
+			System.out.println("comment parent : "+parent);
+			System.out.println("comment writer : "+writer);
+			System.out.println("comment content : "+content);
+			System.out.println("comment regip : "+regip);
+			
+			ArticleDTO dto = new ArticleDTO();
+			dto.setParent(parent);
+			dto.setWriter(writer);
+			dto.setContent(content);
+			dto.setRegip(regip);
+			
+			//댓글 입력
+			int[] insertResult = service.insertComment(dto);
+			int result = insertResult[0];
+			// 방금 입력받은 댓글의 no값
+			int maxNo  = insertResult[1];
+			
+			// 댓글 카운트 수정
+			service.updateArticleForCommentPlus(parent);
+			
+			int parentComment = service.selectArticleComment(parent);
+			//Json 출력(AJAX 요청)
+			JsonObject json = new JsonObject();
+			json.addProperty("result", result);
+			json.addProperty("maxNo", maxNo);
+			json.addProperty("parent", parent);
+			json.addProperty("parentComment", parentComment);
+			resp.getWriter().print(json);
+		}
 		
-		ArticleDTO dto = new ArticleDTO();
-		dto.setParent(parent);
-		dto.setWriter(writer);
-		dto.setContent(content);
-		dto.setRegip(regip);
-		
-		//댓글 입력
-		int result = service.insertComment(dto);
-		
-		System.out.println("comment result : "+result);
-		
-		// 댓글 카운트 수정
-		service.updateArticleForCommentPlus(parent);
-		
-		//Json 출력(AJAX 요청)
-		JsonObject json = new JsonObject();
-		json.addProperty("result", result);
-		resp.getWriter().print(json);
 	}
 }

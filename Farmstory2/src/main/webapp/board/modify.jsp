@@ -5,6 +5,9 @@
 			    <h3>글수정</h3>
 			    <article>
 			        <form action="${ctxPath}/board/modify.do" method="post">
+			        	<input type="hidden" name="no" value="${article.no}">
+			        	<input type="hidden" name="group" value="${group}">
+			        	<input type="hidden" name="cate" value="${cate}">
 			            <table>
 			                <tr>
 			                    <td>제목</td>

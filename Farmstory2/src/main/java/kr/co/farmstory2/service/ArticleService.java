@@ -44,6 +44,11 @@ public enum ArticleService {
 		return dao.selectArticles(cate, start);
 	}
 	
+	public int selectArticleComment(String parent) {
+		return dao.selectArticleComment(parent);
+	}
+	
+	
 	public void updateArticle(ArticleDTO dto) {
 		dao.updateArticle(dto);
 	}
@@ -61,13 +66,13 @@ public enum ArticleService {
 		return dao.selectComments(parent);
 	}
 	
-	public int insertComment(ArticleDTO dto) {
+	public int[] insertComment(ArticleDTO dto) {
 		return dao.insertComment(dto);
 	}
 	
 	
-	public void updateComment(String no, String content) {
-		dao.updateComment(no, content);
+	public int updateComment(String no, String content) {
+		return dao.updateComment(no, content);
 	}
 	public void updateArticleForCommentPlus(String no) {
 		dao.updateArticleForCommentPlus(no);

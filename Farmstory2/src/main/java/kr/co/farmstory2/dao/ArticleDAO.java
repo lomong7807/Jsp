@@ -3,12 +3,17 @@ package kr.co.farmstory2.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import kr.co.farmstory2.db.DBHelper;
 import kr.co.farmstory2.db.SQL;
 import kr.co.farmstory2.dto.ArticleDTO;
 
 public class ArticleDAO extends DBHelper {
 
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	// 기본 CRUD
 	public int insertArticle(ArticleDTO dto) {
 		
@@ -109,6 +114,27 @@ public class ArticleDAO extends DBHelper {
 		}
 		return articles;
 	}
+	
+	public int selectArticleComment(String parent) {
+		int result = 0;
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.SELECT_ARTICLE_COMMENT);
+			psmt.setString(1, parent);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+			close();
+		} catch (Exception e) {
+			logger.error("selectArticleComment() error : "+e.getMessage());
+		}
+		
+		return result;
+	}
+	
 	
 	public void updateArticle(ArticleDTO dto) {
 		try {
@@ -221,19 +247,31 @@ public class ArticleDAO extends DBHelper {
 		return comments;
 	}
 	
-	public int insertComment(ArticleDTO dto) {
-		int result = 0;
+	public int[] insertComment(ArticleDTO dto) {
+		int[] result = {0, 0};
 		try {
 			conn = getConnection();
+			conn.setAutoCommit(false); // Transaction 시작
+			
+			stmt = conn.createStatement();
 			psmt = conn.prepareStatement(SQL.INSERT_COMMENT);
 			psmt.setInt(1, dto.getParent());
 			psmt.setString(2, dto.getContent());
 			psmt.setString(3, dto.getWriter());
 			psmt.setString(4, dto.getRegip());
-			result = psmt.executeUpdate();
+			result[0] = psmt.executeUpdate();
+			rs = stmt.executeQuery(SQL.SELECT_MAX_NO);
+			conn.commit(); // 작업확정
+			
+			
+			
+			if(rs.next()) {
+				result[1] = rs.getInt(1);
+			}
+			logger.debug("insertCommentMaxNo : "+result[1]);
 			close();
 		}catch (Exception e) {
-			e.printStackTrace();
+			logger.error("insertComment error : "+e.getMessage());
 		}
 		return result;
 	}
@@ -262,17 +300,19 @@ public class ArticleDAO extends DBHelper {
 		}
 	}
 
-	public void updateComment(String no, String content) {
+	public int updateComment(String no, String content) {
+		int result = 0;
 		try {
 			conn = getConnection();
 			psmt = conn.prepareStatement(SQL.UPDATE_COMMENT);
 			psmt.setString(1, content);
 			psmt.setString(2, no);
-			psmt.executeUpdate();
+			result = psmt.executeUpdate();
 			close();
 		}catch (Exception e) {
-			e.printStackTrace();
+			logger.error("updateComment error : "+e.getMessage());
 		}
+		return result;
 	}
 	
 	public int deleteComment(String no) {
@@ -281,7 +321,7 @@ public class ArticleDAO extends DBHelper {
 			conn = getConnection();
 			psmt = conn.prepareStatement(SQL.DELETE_COMMENT);
 			psmt.setString(1, no);
-			psmt.executeUpdate();
+			result = psmt.executeUpdate();
 			close();
 		}catch (Exception e) {
 			e.printStackTrace();

@@ -47,6 +47,7 @@ public class SQL {
 			+ "WHERE `parent`=0 AND `cate`=?"
 			+ "ORDER BY `no` DESC "
 			+ "LIMIT ?, 10";
+	public static final String SELECT_ARTICLE_COMMENT = "SELECT `comment` FROM `Article` WHERE `no`=?";
 	public static final String UPDATE_ARTICLE = "UPDATE `Article` SET `title`=?, `content`=? WHERE `no`=?";
 	public static final String SELECT_COUNT_TOTAL = "SELECT COUNT(*) FROM `Article` WHERE `parent`=0 AND `cate`=?";
 	public static final String SELECT_MAX_NO  					= "SELECT MAX(`no`) FROM `Article`";

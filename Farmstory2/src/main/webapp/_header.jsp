@@ -57,7 +57,7 @@
                 <a href="${ctxPath}/user/logout.do">로그아웃 |</a>
                 </c:if>
                 <c:if test="${sessUser.role eq 'ADMIN'}">
-                <a href="${ctxPath}/admin/">관리자 |</a>
+                <a href="${ctxPath}/admin/index.do">관리자 |</a>
                 </c:if>
                 <a href="${ctxPath}/board/list.do?group=Community&cate=qna">고객센터</a>
             </p>
