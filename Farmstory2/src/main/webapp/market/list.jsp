@@ -11,86 +11,60 @@
 
             <!-- 내용 시작 -->
             <p class="sort">
-                <a href="#" class="on">전체(10) |</a>
-                <a href="#">과일 |</a>
-                <a href="#">야채 |</a>
-                <a href="#">곡류</a>
+                <a href="${ctxPath}/market/list.do?type=0" class="${type eq 0 ? 'on':''}">전체 
+	                <c:if test="${type eq 0}">
+	                	<span>(${total})</span>
+	                </c:if>
+                 |</a>
+                <a href="${ctxPath}/market/list.do?type=1" class="${type eq 1 ? 'on':''}">과일 
+	                <c:if test="${type eq 1}">
+	                	<span>(${total})</span>
+	                </c:if>
+                 |</a>
+                <a href="${ctxPath}/market/list.do?type=2" class="${type eq 2 ? 'on':''}">야채 
+	                <c:if test="${type eq 2}">
+	                	<span>(${total})</span>
+	                </c:if>
+                 |</a>
+                <a href="${ctxPath}/market/list.do?type=3" class="${type eq 3 ? 'on':''}">곡류 
+	                <c:if test="${type eq 3}">
+	                	<span>(${total})</span>
+	                </c:if>
+                </a>
             </p>
             <table border="0">
+                <c:forEach var="product" items="${products}">
                 <tr>
                     <td>
-                        <a href="./view.jsp"><img src="../images/market_item1.jpg" alt="사과 500g"></a>
+                        <a href="./view.do?pNo=${product.pNo}"><img src="${ctxPath}/thumb/${product.thumb1}" alt="${product.pName}" class="thumb"></a>
                     </td>
-                    <td>과일</td>
-                    <td><a href="#">사과 500g</a></td>
-                    <td><strong>4,000</strong>원</td>
-                </tr>
-                <tr>
                     <td>
-                        <a href="./view.jsp"><img src="../images/market_item2.jpg" alt="배 5kg"></a>
+                    	<c:if test="${product.type eq 1}">
+                    	과일
+                    	</c:if>
+                    	<c:if test="${product.type eq 2}">
+                    	야채
+                    	</c:if>
+                    	<c:if test="${product.type eq 3}">
+                    	곡류
+                    	</c:if>
                     </td>
-                    <td>과일</td>
-                    <td><a href="#">배 5kg</a></td>
-                    <td><strong>30,000</strong>원</td>
+                    <td><a href="${ctxPath}/market/view.do?pNo=${product.pNo}">${product.pName}</a></td>
+                    <td><strong>${product.priceWithComma}</strong>원</td>
                 </tr>
-                <tr>
-                    <td>
-                        <a href="./view.jsp"><img src="../images/market_item3.jpg" alt="방울토마토"></a>
-                    </td>
-                    <td>야채</td>
-                    <td><a href="#">방울토마토</a></td>
-                    <td><strong>5,000</strong>원</td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="./view.jsp"><img src="../images/market_item4.jpg" alt="딸기 500g"></a>
-                    </td>
-                    <td>과일</td>
-                    <td><a href="#">딸기 500g</a></td>
-                    <td><strong>4,000</strong>원</td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="./view.jsp"><img src="../images/market_item5.jpg" alt="ㅊ"></a>
-                    </td>
-                    <td>과일</td>
-                    <td><a href="#">오렌지</a></td>
-                    <td><strong>8,000</strong>원</td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="./view.jsp"><img src="../images/market_item6.jpg" alt="무농약현미"></a>
-                    </td>
-                    <td>곡류</td>
-                    <td><a href="#">무농약현미</a></td>
-                    <td><strong>39,000</strong>원</td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="./view.html"><img src="../images/market_item7.jpg" alt="팜스토리 하루야채 샐러드"></a>
-                    </td>
-                    <td>야채</td>
-                    <td><a href="#">팜스토리 하루야채 샐러드</a></td>
-                    <td><strong>9,900</strong>원</td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="./view.html"><img src="../images/market_item8.jpg" alt="바나나"></a>
-                    </td>
-                    <td>과일</td>
-                    <td><a href="#">바나나</a></td>
-                    <td><strong>3,000</strong>원</td>
-                </tr>
+                </c:forEach>
             </table>
 
             <p class="paging">
-                <a href="#"><</a>
-                <a href="#" class="on">[1]</a>
-                <a href="#">[2]</a>
-                <a href="#">[3]</a>
-                <a href="#">[4]</a>
-                <a href="#">[5]</a>
-                <a href="#">></a>
+                <c:if test="${pageGroupStart > 1}">
+		            	<a href="${ctxPath}/market/list.do?type=${type}&pg=${pageGroupStart - 1}"><</a>
+	            </c:if>
+	            <c:forEach var="i" begin="${pageGroupStart}" end="${pageGroupEnd}">
+	            	<a href="${ctxPath}/market/list.do?type=${type}&pg=${i}&" class="num ${currentPage == i?'on':'off'}">[${i}]</a>
+	            </c:forEach>
+	            <c:if test="${pageGroupEnd < lastPageNum}">
+	            	<a href="${ctxPath}/market/list.do?type=${type}&pg=${pageGroupEnd + 1}">></a>
+	            </c:if>
             </p>
 
             <!-- 내용 끝 -->

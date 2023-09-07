@@ -1,10 +1,34 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file ="./_header.jsp" %>
+
 <main>
     <%@include file ="./_asideAdmin.jsp" %>
     <section id="productList">
         <nav>
             <h3>상품목록</h3>
+            <p class="sort">
+                <a href="${ctxPath}/admin/productList.do?type=0" class="${type eq 0 ? 'on':''}">전체 
+                <c:if test="${type eq 0}">
+                <span>(${total})</span>
+                </c:if>
+                 |</a>
+                <a href="${ctxPath}/admin/productList.do?type=1" class="${type eq 1 ? 'on':''}">과일 
+                <c:if test="${type eq 1}">
+                <span>(${total})</span>
+                </c:if>
+                 |</a>
+                <a href="${ctxPath}/admin/productList.do?type=2" class="${type eq 2 ? 'on':''}">야채 
+                <c:if test="${type eq 2}">
+                <span>(${total})</span>
+                </c:if>
+                 |</a>
+                <a href="${ctxPath}/admin/productList.do?type=3" class="${type eq 3 ? 'on':''}">곡류 
+                <c:if test="${type eq 3}">
+                <span>(${total})</span>
+                </c:if>
+                </a>
+            </p>
         </nav>
 
         <article>
@@ -20,16 +44,18 @@
                     <th>재고</th>
                     <th>등록일</th>
                 </tr>
+                <c:forEach var="product" items="${products}">
                 <tr>
                     <td><input type="checkbox" name=""/></td>
-                    <td><img src="./images/sample_item1.jpg" class="thumb" alt="샘플1"></td>
-                    <td>1011</td>
-                    <td>사과 500g</td>
-                    <td>과일</td>
-                    <td>4,000원</td>
-                    <td>100</td>
-                    <td>2023-01-01</td>
+                    <td><img src="/Farmstory2/thumb/${product.thumb1}" class="thumb" alt="샘플1"></td>
+                    <td>${product.pNo}</td>
+                    <td>${product.pName}</td>
+                    <td>${product.type}</td>
+                    <td>${product.priceWithComma}원</td>
+                    <td>${product.stock}</td>
+                    <td>${product.rdate}</td>
                 </tr>
+                </c:forEach>
             </table>
 
             <p>
@@ -38,13 +64,15 @@
             </p>
             
             <p class="paging">
-                <a href="#"><</a>
-                <a href="#" class="on">[1]</a>
-                <a href="#">[2]</a>
-                <a href="#">[3]</a>
-                <a href="#">[4]</a>
-                <a href="#">[5]</a>
-                <a href="#">></a>
+                <c:if test="${pageGroupStart > 1}">
+		            	<a href="${ctxPath}/admin/productList.do?type=${type}&pg=${pageGroupStart - 1}"><</a>
+	            </c:if>
+	            <c:forEach var="i" begin="${pageGroupStart}" end="${pageGroupEnd}">
+	            	<a href="${ctxPath}/admin/productList.do?type=${type}&pg=${i}&" class="num ${currentPage == i?'on':'off'}">[${i}]</a>
+	            </c:forEach>
+	            <c:if test="${pageGroupEnd < lastPageNum}">
+	            	<a href="${ctxPath}/admin/productList.do?type=${type}&pg=${pageGroupEnd + 1}">></a>
+	            </c:if>
             </p>
 
         </article>

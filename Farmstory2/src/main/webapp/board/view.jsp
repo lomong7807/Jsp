@@ -39,7 +39,7 @@
 						// 삭제에 성공하면
 						if(data.result > 0){
 							
-							alert('댓글이 삭제되었습니다.');
+							//alert('댓글이 삭제되었습니다.');
 							// 화면처리
 							article.remove();
 							
@@ -125,6 +125,17 @@
 				}
 			}); //ajax end
 		})// 댓글 입력 end
+
+		
+		/////////////////////////////////////////////////////////////////////
+		////////////////////////    댓글 입력 취소   ///////////////////////////////
+		/////////////////////////////////////////////////////////////////////
+		$('#btnCancel').click(function(e){
+			e.preventDefault();
+			if(confirm('입력된 내용이 삭제됩니다. 취소하시겠습니까?')){
+				$('form > textarea[name=commentContent]').val('');
+			}
+		});// btnCancle end
 		
 		/////////////////////////////////////////////////////////////////////
 		////////////////////////    댓글 수정   ///////////////////////////////
@@ -175,7 +186,7 @@
 							console.log(data.result);
 							// 댓글 수정에 성공하면
 							if(data.result > 0){
-								alert('댓글이 수정되었습니다.');
+								//alert('댓글이 수정되었습니다.');
 							}
 						}
 					}); //ajax end
@@ -194,17 +205,19 @@
 		/////////////////////////////////////////////////////////////////////
 		$(document).on('click', '.cancle', function(e){
 			e.preventDefault();
-			alert('cancle');
+			if(confirm('댓글수정을 취소하시겠습니까?')){
+
+				const prevContent = $(this).parent().prev().text();
+				console.log(prevContent);
+				
+				$(this).parent().prev().val(prevContent);
+				$(this).parent().prev().removeClass('modi');
+				$(this).parent().prev().attr('readonly', true);
+				$(this).next().text('수정');
+				$(this).hide();
+			}
 			
-			const prevContent = $(this).parent().prev().text();
-			console.log(prevContent);
-			
-			$(this).parent().prev().val(prevContent);
-			$(this).parent().prev().removeClass('modi');
-			$(this).parent().prev().attr('readonly', true);
-			$(this).next().text('수정');
-			$(this).hide();
-		});
+		}); // cancle end
 	})// end
 </script>
 
@@ -220,8 +233,15 @@
             <tr>
                 <td>첨부파일</td>
                 <td>
-                    <a href="${ctxPath}/fileDownload.do?fno=${file.fno}">${file.ofile}</a>
-                    <span> | 다운로드 수 [${file.download}]</span>
+                	<c:choose>
+                		<c:when test="${article.file > 0 }">
+                    	<a href="${ctxPath}/fileDownload.do?fno=${file.fno}">${file.ofile}</a>
+                    	<span> | 다운로드 수 [${file.download}]</span>
+                    	</c:when>
+                    	<c:otherwise>
+                    	<span>-</span>
+                    	</c:otherwise>
+                    </c:choose>
                 </td>
             </tr>
             <tr>
@@ -232,8 +252,10 @@
             </tr>
         </table>
         <div>
+        	<c:if test="${sessUser.uid eq article.writer}">
             <a href="${ctxPath}/delete.do?group=${group}&cate=${cate}&no=${article.no}" class="btnDelete">삭제</a>
             <a href="${ctxPath}/board/modify.do?group=${group}&cate=${cate}&no=${article.no}" class="btnModify">수정</a>
+            </c:if>
             <a href="${ctxPath}/board/list.do?group=${group}&cate=${cate}" class="btnList">목록</a>
         </div>  
         
@@ -246,14 +268,16 @@
 	            	<input type="hidden" name="parent" value="${comment.parent}">
                     <span class="nick">${comment.nick}</span>
                     <span class="date">${comment.rdate}</span>
-	                <textarea class="content" name="content" readonly>${comment.content}</textarea>
+	                <textarea class="content" name="content" readonly >${comment.content}</textarea>
 	                <!-- 현재 이용자가 댓글 작성자와 동일한지 확인하여 삭제와 수정을 보이게끔 한다. -->
+	                <c:if test="${sessUser.uid eq  comment.writer}">
 	                <div>
 	                	<!-- for문 안에서 반복되기 때문에 id가 반복되면 안돼서 class로 사용 -->
 	                    <a href="#" data-no="${comment.no}" data-parent="${comment.parent}" data-parentComment="${article.comment}" class="remove">삭제</a>
 	                    <a href="#" class="cancle">취소</a>
 	                    <a href="#" data-no="${comment.no}" class="modify">수정</a> <!-- AJAX 처리해야됨 -->
 	                </div>
+	                </c:if>
             </article>
             </c:forEach>
             
@@ -273,7 +297,7 @@
             	<input type="hidden" name="writer" value="${sessUser.uid}"/>
                 <textarea name="commentContent" required></textarea>
                 <div>
-                    <a href="#" class="btnCancel">취소</a>
+                    <a href="#" id="btnCancel" class="btnCancel">취소</a>
                     <input type="submit" id="btnComment" class="btnWrite" value="작성완료"/>
                 </div>
             </form>

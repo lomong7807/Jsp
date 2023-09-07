@@ -28,6 +28,8 @@
     
 	    const success = ${success};
 		
+	    console.log('success : '+success);
+	    
 		if(success == 100){
 			alert('아이디, 비밀번호를 다시 확인하십시오.');
 		}else if(success == 101){
@@ -35,7 +37,9 @@
 		}else if(success == 200){
 			alert('로그아웃 되었습니다.');
 		}else if(success == 201){
-			alert('로그인을 먼저 해주세요.')
+			alert('로그인을 먼저 해주세요.');
+		}else if(success == 300){
+			alert('상품 주문이 완료되었습니다.');
 		}
     	
     </script>
@@ -65,7 +69,7 @@
             
             <ul class="gnb">
                 <li><a href="${ctxPath}/introduction/hello.do">팜스토리소개</a></li>
-                <li><a href="${ctxPath}/market/list.do"><img src="${ctxPath}/images/head_menu_badge.png" alt="30%"/>장보기</a></li>
+                <li><a href="${ctxPath}/market/list.do?type=0"><img src="${ctxPath}/images/head_menu_badge.png" alt="30%"/>장보기</a></li>
                 <li><a href="${ctxPath}/board/list.do?group=Croptalk&cate=story">농작물이야기</a></li>
                 <li><a href="${ctxPath}/board/list.do?group=Event&cate=event">이벤트</a></li>
                 <li><a href="${ctxPath}/board/list.do?group=Community&cate=notice">커뮤니티</a></li>

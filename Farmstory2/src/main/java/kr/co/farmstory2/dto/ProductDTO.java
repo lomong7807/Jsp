@@ -19,9 +19,51 @@ public class ProductDTO {
 	private String etc;
 	private String rdate;
 	private String path;
+	// order 추가 필드
+	private String count;
+	private int total;
+	private int totalPrice;
+	
+	public String getCount() {
+		return count;
+	}
+	public void setCount(String count) {
+		this.count = count;
+	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
+	public void setTotal(String total) {
+		this.total = Integer.parseInt(total);
+	}
+	public String getTotalWithComma() {
+		
+		DecimalFormat df = new DecimalFormat("###,###");
+		return df.format(total);
+	}
+	public int getTotalPrice() {
+		return totalPrice;
+	}
+	public String getTotalPriceWithComma() {
+		
+		DecimalFormat df = new DecimalFormat("###,###");
+		return df.format(totalPrice);
+	}
+	public void setTotalPrice(int totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+	public void setTotalPrice(String total, String delivery) {
+		this.totalPrice = Integer.parseInt(total) + Integer.parseInt(delivery);
+	}
+	public void setTotalPrice(int total, int delivery) {
+		this.totalPrice = total+delivery;
+	}
 	
 	
-	
+	/////////////////////////////
 	public ProductDTO() {
 		
 	}
@@ -35,6 +77,9 @@ public class ProductDTO {
 	}
 	public void setpNo(int pNo) {
 		this.pNo = pNo;
+	}
+	public void setpNo(String pNo) {
+		this.pNo = Integer.parseInt(pNo);
 	}
 	public int getType() {
 		return type;

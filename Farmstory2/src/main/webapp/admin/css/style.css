@@ -129,7 +129,12 @@ footer > p {
 }
 
 /* 상품관리(목록) */
-#productList {}
+#productList > nav > .sort {
+	float: right;
+	margin:5px;
+}
+#productList > nav > .sort > a {
+}
 #productList > article {}
 #productList > article > table {}
 #productList table {}
