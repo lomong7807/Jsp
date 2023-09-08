@@ -36,9 +36,13 @@ public enum ProductService {
 		return dao.selectProduct(pNo);
 	}
 	
+	public List<ProductDTO> selectLatestProducts(int size) {
+		return dao.selectLatestProducts(size);
+	}
 	public List<ProductDTO> selectProducts(String type, int start) {
 		return dao.selectProducts(type, start);
 	}
+	
 	public void updateProduct(ProductDTO dto) {}
 	public void deleteProduct(int pNo) {}
 

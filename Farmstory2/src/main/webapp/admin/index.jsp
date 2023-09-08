@@ -21,30 +21,24 @@
                     <th>재고</th>
                     <th>등록일</th>
                 </tr>
+                <c:forEach var="product" items="${products}">
                 <tr>
-                    <td>1011</td>
-                    <td>사과 500g</td>
+                    <td>${product.pNo}</td>
+                    <td>${product.pName}</td>
+                    <c:if test="${product.type eq 1}">
                     <td>과일</td>
-                    <td>4,000원</td>
-                    <td>100</td>
-                    <td>2023-01-01</td>
+                    </c:if>
+                    <c:if test="${product.type eq 2}">
+                    <td>야채</td>
+                    </c:if>
+                    <c:if test="${product.type eq 3}">
+                    <td>곡류</td>
+                    </c:if>
+                    <td>${product.priceWithComma}원</td>
+                    <td>${product.stock}</td>
+                    <td>${product.rdate}</td>
                 </tr>
-                <tr>
-                    <td>1011</td>
-                    <td>사과 500g</td>
-                    <td>과일</td>
-                    <td>4,000원</td>
-                    <td>100</td>
-                    <td>2023-01-01</td>
-                </tr>
-                <tr>
-                    <td>1011</td>
-                    <td>사과 500g</td>
-                    <td>과일</td>
-                    <td>4,000원</td>
-                    <td>100</td>
-                    <td>2023-01-01</td>
-                </tr>                        
+                </c:forEach>
             </table>
         </article>
 
@@ -64,36 +58,23 @@
                     <th>주문자</th>
                     <th>주문일</th>
                 </tr>
+                <c:forEach var="order" items="${orders}">
                 <tr>
-                    <td>1011</td>
-                    <td>사과 500g</td>
-                    <td>4,000원</td>
-                    <td>2개</td>
-                    <td>3,000원</td>
-                    <td>8,000원</td>
-                    <td>홍길동</td>
-                    <td>2023-01-01</td>
+                    <td>${order.orderNo}</td>
+                    <td>${order.pName}</td>
+                    <td>${order.pPriceWithComma}원</td>
+                    <td>${order.orderCount}개</td>
+                    <c:if test="${order.orderDelivery > 0}">
+                    <td>${order.orderDeliveryWithComma}원</td>
+                    </c:if>
+                    <c:if test="${order.orderDelivery == 0}">
+                    <td>무료</td>
+                    </c:if>
+                    <td>${order.orderTotalWithComma}원</td>
+                    <td>${order.nick}</td>
+                    <td>${order.orderDate}</td>
                 </tr>
-                <tr>
-                    <td>1011</td>
-                    <td>사과 500g</td>
-                    <td>4,000원</td>
-                    <td>2개</td>
-                    <td>3,000원</td>
-                    <td>8,000원</td>
-                    <td>홍길동</td>
-                    <td>2023-01-01</td>
-                </tr>
-                <tr>
-                    <td>1011</td>
-                    <td>사과 500g</td>
-                    <td>4,000원</td>
-                    <td>2개</td>
-                    <td>3,000원</td>
-                    <td>8,000원</td>
-                    <td>홍길동</td>
-                    <td>2023-01-01</td>
-                </tr>
+                </c:forEach>
             </table>
         </article>
         <article>
@@ -111,33 +92,17 @@
                     <th>등급</th>
                     <th>회원가입일</th>
                 </tr>
+                <c:forEach var="user" items="${users}">
                 <tr>
-                    <td>a101</td>
-                    <td>김유신</td>
-                    <td>유신123</td>
-                    <td>010-1234-1001</td>
-                    <td>yusin123@naver.com</td>
-                    <td>2</td>
-                    <td>2023-01-01</td>
+                    <td>${user.uid}</td>
+                    <td>${user.name}</td>
+                    <td>${user.nick}</td>
+                    <td>${user.hp}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td>${user.regDate}</td>
                 </tr>
-                <tr>
-                    <td>a101</td>
-                    <td>김유신</td>
-                    <td>유신123</td>
-                    <td>010-1234-1001</td>
-                    <td>yusin123@naver.com</td>
-                    <td>2</td>
-                    <td>2023-01-01</td>
-                </tr>
-                <tr>
-                    <td>a101</td>
-                    <td>김유신</td>
-                    <td>유신123</td>
-                    <td>010-1234-1001</td>
-                    <td>yusin123@naver.com</td>
-                    <td>2</td>
-                    <td>2023-01-01</td>
-                </tr>                        
+                </c:forEach>
             </table>
         </article>
     </section>

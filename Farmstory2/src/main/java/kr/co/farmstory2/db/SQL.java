@@ -20,6 +20,7 @@ public class SQL {
 											+ "`regDate`=NOW()";
 	public static final String SELECT_USER 			= "SELECT * FROM `User` WHERE `uid`=? AND `pass`=SHA2(?, 256)";
 	public static final String SELECT_USERS 		= "SELECT `uid`,`name`,`nick`,`email`,`hp`,`role`,`zip`,`addr1`,`addr2`,`regip`,`regDate` FROM `User` LIMIT ?, 10";
+	public static final String SELECT_LATEST_USERS 		= "SELECT `uid`,`name`,`nick`,`email`,`hp`,`role`,`zip`,`addr1`,`addr2`,`regip`,`regDate` FROM `User` Order BY `regDate` DESC LIMIT ?";
 	public static final String SELECT_COUNT_UID 	= "SELECT COUNT(*) FROM `User` WHERE `uid`=?";
 	public static final String SELECT_COUNT_NICK 	= "SELECT COUNT(*) FROM `User` WHERE `nick`=?";
 	public static final String SELECT_COUNT_EMAIL 	= "SELECT COUNT(*) FROM `User` WHERE `email`=?";
@@ -84,6 +85,7 @@ public class SQL {
 												+ "`etc`=?, "
 												+ "`rdate`=NOW()";
 	public final static String SELECT_PRODUCT = "SELECT * FROM `Product` WHERE `pNo`=?";
+	public final static String SELECT_LATEST_PRODUCTS = "SELECT * FROM `Product` ORDER BY `pNo` DESC LIMIT ?";
 	public final static String SELECT_PRODUCTS_ALL = "SELECT * FROM `Product` WHERE `stock` > 0 LIMIT ?, 10";
 	public final static String SELECT_PRODUCTS_TYPE = "SELECT * FROM `Product` WHERE `stock` > 0 AND `type`=? LIMIT ?, 10";
 	public final static String SELECT_COUNT_PRODUCTS_ALL = "SELECT COUNT(*) FROM `Product` WHERE `stock` > 0";
@@ -105,7 +107,7 @@ public class SQL {
 			+ "`orderEtc`=?, "
 			+ "`orderUser`=?, "
 			+ "`orderDate`=NOW() ";
-	public final static String SELECT_ORDER = "SELECT "
+	public final static String SELECT_ORDERS = "SELECT "
 			+ "a.*,"
 			+ "b.pName,"
 			+ "b.thumb1 "
@@ -113,11 +115,34 @@ public class SQL {
 			+ "JOIN `Product` AS b "
 			+ "ON a.orderProduct=b.pNo "
 			+ "LIMIT ?, 10";
+	public final static String SELECT_ORDERS_ADMIN = "SELECT "
+			+ "b.*, "
+			+ "a.pName,"
+			+ "a.price,"
+			+ "c.nick,"
+			+ "c.uid, "
+			+ "a.pNo, "
+			+ "c.name "
+			+ "FROM `Product` AS a "
+			+ "JOIN `Order` AS b ON a.pNo=b.orderProduct "
+			+ "JOIN `User` AS c ON b.orderUser=c.uid "
+			+ "LIMIT ?, 10";
 	public final static String SELECT_COUNT_ORDERS_ALL = "SELECT COUNT(*) FROM `Order`";
 	public final static String SELECT_ORDERS_USER = "SELECT * FROM `Order` WHERE `OrderUser`=?";
 	public final static String DELETE_ORDERS = "DELETE FROM `Order` WHERE `orderNo`=?";
-	
-	
+	public static final String SELECT_LATEST_ORDERS = "SELECT "
+			+ "b.orderNo,"
+			+ "a.pName,"
+			+ "a.price,"
+			+ "b.orderCount,"
+			+ "b.orderDelivery,"
+			+ "b.orderTotal,"
+			+ "c.nick,"
+			+ "b.orderDate "
+			+ "FROM `Product` AS a "
+			+ "JOIN `Order` AS b ON a.pNo=b.orderProduct "
+			+ "JOIN `User` AS c ON b.orderUser=c.uid "
+			+ "ORDER BY `orderNo` DESC LIMIT ?";
 	//********************************************* File *********************************************//
 	public static final String INSERT_FILE 						= "INSERT INTO `file` SET "
 			+ "`ano`=?,"

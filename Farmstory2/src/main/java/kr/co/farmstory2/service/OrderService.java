@@ -21,6 +21,12 @@ public enum OrderService {
 	public List<OrderDTO> selectOrders(int start) {
 		return dao.selectOrders(start);
 	}
+	public List<OrderDTO> selectOrdersAdmin(int start) {
+		return dao.selectOrdersAdmin(start);
+	}
+	public List<OrderDTO> selectLatestOrders(int size) {
+		return dao.selectLatestOrders(size);
+	}
 	public void updateOrder() {}
 	public void deleteOrder(String orderNo) {
 	}

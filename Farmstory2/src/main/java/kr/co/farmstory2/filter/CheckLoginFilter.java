@@ -44,7 +44,22 @@ public class CheckLoginFilter implements Filter {
 		}else {
 			// 다음 필터 호출, 필터 없으면 최종 자원 요청
 			logger.debug("here2...");
-			((HttpServletResponse)response).sendRedirect("/Farmstory2/user/login.do?success=201");
+			String target = request.getParameter("target");
+			String group = request.getParameter("group");
+			String cate = request.getParameter("cate");
+			String no = request.getParameter("no");
+			String pNo = request.getParameter("pNo");
+			
+			if(target.equals("view")) {
+				((HttpServletResponse)response).sendRedirect("/Farmstory2/user/login.do?success=201&target="+target+"&group="+group+"&cate="+cate+"&no="+no);
+			}else if(target.equals("write")) {
+				((HttpServletResponse)response).sendRedirect("/Farmstory2/user/login.do?success=201&target="+target+"&group="+group+"&cate="+cate);
+			}else if(target.equals("market")) {
+				((HttpServletResponse)response).sendRedirect("/Farmstory2/user/login.do?success=201&target="+target+"&pNo="+pNo);
+			}else {
+				((HttpServletResponse)response).sendRedirect("/Farmstory2/user/login.do?success=100");
+			}
+			
 		}
 	}
 }

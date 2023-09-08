@@ -75,20 +75,20 @@
             <h3>주문정보 입력</h3>
             <div class="shipping">
             	<form id="formOrder" action="${ctxPath}/market/orderComplete.do?type=0" method="post">
-            	<input type="text" name="orderProduct" 	value="${dto.pNo}">
-            	<input type="text" name="orderCount" 	value="${dto.count}">
-            	<input type="text" name="orderDelivery" value="${dto.delivery}">
-            	<input type="text" name="orderPrice"	value="${dto.price}">
+            	<input type="hidden" name="orderProduct" 	value="${dto.pNo}">
+            	<input type="hidden" name="orderCount" 	value="${dto.count}">
+            	<input type="hidden" name="orderDelivery" value="${dto.delivery}">
+            	<input type="hidden" name="orderPrice"	value="${dto.price}">
             	<c:choose>
                 	<c:when test="${dto.total > 30000}">
-                		<input type="text" name="orderTotal" 	value="${dto.total}">
+                		<input type="hidden" name="orderTotal" 	value="${dto.total}">
                 	</c:when>
                 	<c:otherwise>
-                		<input type="text" name="orderTotal" 	value="${dto.totalPrice}">
+                		<input type="hidden" name="orderTotal" 	value="${dto.totalPrice}">
                 	</c:otherwise>
                 </c:choose>
-            	<input type="text" name="orderTotal" 	value="${dto.total}">
-            	<input type="text" name="orderUser" 	value="${sessUser.uid}">
+            	<input type="hidden" name="orderTotal" 	value="${dto.total}">
+            	<input type="hidden" name="orderUser" 	value="${sessUser.uid}">
                 <table>
                     <tr>
                         <td>받는분</td>
@@ -96,7 +96,7 @@
                     </tr>
                     <tr>
                         <td>휴대폰</td>
-                        <td><input type="text" name="hp" required value="${sessUser.hp}"></td>
+                        <td><input type="text" name="hp" required value="${sessUser.hp}" minlength="13" maxlength="13"></td>
                     </tr>
                     <tr>
                         <td>배송주소</td>

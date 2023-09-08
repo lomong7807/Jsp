@@ -9,7 +9,7 @@ a {text-decoration: none; color: #111;}
 
 #container {
     position: relative;
-    width: 980px;
+    width: 1076px;
     height: auto;
     margin: 0 auto;
 }
@@ -74,7 +74,7 @@ main > aside > ul > li > a:hover {
 /* 메인 컨텐츠 */
 main > section {
     float: right;
-    width: 804px;
+    width: 900px;
     min-height: 400px;
     padding: 10px;
     box-sizing: border-box;

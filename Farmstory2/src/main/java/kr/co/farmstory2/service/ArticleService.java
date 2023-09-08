@@ -58,6 +58,9 @@ public enum ArticleService {
 	}
 
 	// 추가 
+	public List<ArticleDTO> selectLatests(String cate, int size) {
+		return dao.selectLatests(cate, size);
+	}
 	public int selectCountTotal(String cate) {
 		return dao.selectCountTotal(cate);
 	}

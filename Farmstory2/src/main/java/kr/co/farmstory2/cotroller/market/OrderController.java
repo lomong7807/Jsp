@@ -41,13 +41,6 @@ public class OrderController extends HttpServlet{
 		String count 	= req.getParameter("count");
 		int total 	= Integer.parseInt(req.getParameter("total"));
 		
-		System.out.println("order thumb2 : "+thumb2);
-		System.out.println("order pName : "+pName);
-		System.out.println("order delivery : "+delivery);
-		System.out.println("order price : "+price);
-		System.out.println("order count : "+count);
-		System.out.println("order total : "+total);
-		
 		dto.setThumb2(thumb2);
 		dto.setpName(pName);
 		dto.setpNo(pNo);

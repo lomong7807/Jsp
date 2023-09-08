@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.farmstory2.db.DBHelper;
 import kr.co.farmstory2.db.SQL;
+import kr.co.farmstory2.dto.OrderDTO;
 import kr.co.farmstory2.dto.ProductDTO;
 
 public class ProductDAO extends DBHelper{
@@ -67,6 +68,42 @@ public class ProductDAO extends DBHelper{
 			e.printStackTrace();
 		}
 		return dto;
+	}
+	// 추가 
+	public List<ProductDTO> selectLatestProducts(int size) {
+		
+		List<ProductDTO> latests = new ArrayList<>();
+		
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.SELECT_LATEST_PRODUCTS);
+			psmt.setInt(1, size);
+			
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductDTO dto = new ProductDTO();
+				dto.setpNo(rs.getInt(1));
+				dto.setType(rs.getInt(2));
+				dto.setpName(rs.getString(3));
+				dto.setPrice(rs.getInt(4));
+				dto.setDelivery(rs.getInt(5));
+				dto.setStock(rs.getInt(6));
+				dto.setSold(rs.getInt(7));
+				dto.setThumb1(rs.getString(8));
+				dto.setThumb2(rs.getString(9));
+				dto.setThumb3(rs.getString(10));
+				dto.setSeller(rs.getString(11));
+				dto.setEtc(rs.getString(12));
+				dto.setRdate(rs.getString(13));
+				latests.add(dto);
+			}
+			close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return latests;
 	}
 	
 	public List<ProductDTO> selectProducts(String type, int start) {

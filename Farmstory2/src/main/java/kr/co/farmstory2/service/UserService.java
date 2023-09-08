@@ -20,6 +20,10 @@ public class UserService {
 	public UserDTO selectUser(String uid, String pass) {
 		return dao.selectUser(uid, pass);
 	}
+	public List<UserDTO> selectLatestUsers(int size) {
+		return dao.selectLatestUsers(size);
+	}
+	
 	public List<UserDTO> selectUsers() {
 		return dao.selectUsers();
 	}

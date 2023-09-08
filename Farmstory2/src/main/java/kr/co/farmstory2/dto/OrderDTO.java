@@ -1,5 +1,7 @@
 package kr.co.farmstory2.dto;
 
+import java.text.DecimalFormat;
+
 public class OrderDTO {
 
 	private int orderNo;
@@ -20,6 +22,11 @@ public class OrderDTO {
 	/////////////// 추가 /////////////////////
 	private String pName;
 	private String thumb1;
+	private int pPrice;
+	private String nick;
+	private String name;
+	private String pNo;
+	private String uid;
 	
 	public String getpName() {
 		return pName;
@@ -34,7 +41,41 @@ public class OrderDTO {
 	public void setThumb1(String thumb1) {
 		this.thumb1 = thumb1;
 	}
-	
+	public int getpPrice() {
+		return pPrice;
+	}
+	public String getpPriceWithComma() {
+		
+		DecimalFormat df = new DecimalFormat("###,###");
+		return df.format(pPrice);
+	}
+	public void setpPrice(String pPrice) {
+		this.pPrice = Integer.parseInt(pPrice);
+	}
+	public String getNick() {
+		return nick;
+	}
+	public void setNick(String nick) {
+		this.nick = nick;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getpNo() {
+		return pNo;
+	}
+	public void setpNo(String pNo) {
+		this.pNo = pNo;
+	}
+	public String getUid() {
+		return uid;
+	}
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
 	////////////////////////////////////////////
 	
 	public int getOrderNo() {
@@ -42,6 +83,9 @@ public class OrderDTO {
 	}
 	public void setOrderNo(int orderNo) {
 		this.orderNo = orderNo;
+	}
+	public void setOrderNo(String orderNo) {
+		this.orderNo = Integer.parseInt(orderNo);
 	}
 	public int getOrderProduct() {
 		return orderProduct;
@@ -64,6 +108,11 @@ public class OrderDTO {
 	public int getOrderDelivery() {
 		return orderDelivery;
 	}
+	public String getOrderDeliveryWithComma() {
+		
+		DecimalFormat df = new DecimalFormat("###,###");
+		return df.format(orderDelivery);
+	}
 	public void setOrderDelivery(int orderDelivery) {
 		this.orderDelivery = orderDelivery;
 	}
@@ -81,6 +130,11 @@ public class OrderDTO {
 	}
 	public int getOrderTotal() {
 		return orderTotal;
+	}
+	public String getOrderTotalWithComma() {
+		
+		DecimalFormat df = new DecimalFormat("###,###");
+		return df.format(orderTotal);
 	}
 	public void setOrderTotal(int orderTotal) {
 		this.orderTotal = orderTotal;

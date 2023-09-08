@@ -105,6 +105,7 @@
 	               	<input type="hidden" name="price"    value="${dto.price}">
 	               	<input type="hidden" name="count"    value="1">
 	               	<input type="hidden" name="total"    value="${dto.price}">                
+	               	<input type="hidden" name="target"   value="market">                
                </form>
                <a href="#" class="btnOrder">
                     <img src="${ctxPath}/images/market_btn_order.gif" alt="바로 구매하기"/>

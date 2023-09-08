@@ -58,7 +58,6 @@ public class ListController extends HttpServlet{
 		req.setAttribute("type", type);
 		req.setAttribute("products", products);
 		req.setAttribute("total", total);
-		System.out.println("total : "+total);
 		
 		req.setAttribute("currentPage", currentPage);
 		req.setAttribute("lastPageNum", lastPageNum);

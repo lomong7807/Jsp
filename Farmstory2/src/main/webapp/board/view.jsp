@@ -3,7 +3,8 @@
 <jsp:include page="./_aside${group}.jsp"/>
 <script>
 	$(function(){
-		
+		// 댓글 수정 초기값. 댓글 수정을 누르기 전에는 수정 중인 댓글이 없기때문에 null로 설정
+		let editingComment = null;
 		/////////////////////////////////////////////////////////////////////
 		////////////////////////    댓글 삭제   ///////////////////////////////
 		/////////////////////////////////////////////////////////////////////
@@ -39,6 +40,12 @@
 						// 삭제에 성공하면
 						if(data.result > 0){
 							
+							if(editingComment != null){
+								const prevContent = $(editingComment).text();
+								cancelEdit(editingComment);
+								editingComment.val(prevContent);								
+							}
+							
 							//alert('댓글이 삭제되었습니다.');
 							// 화면처리
 							article.remove();
@@ -49,6 +56,8 @@
 								$('.commentList').append(article);
 							}
 						}
+						editingComment = null;
+						return editingComment;
 					}
 				}); //ajax end
 			} // confirm
@@ -63,6 +72,14 @@
 			if($('#formComment > textarea[name=commentContent]').val().length === 0){
 				alert('내용을 입력하세요.');
 				return;
+			}else if(editingComment !== null){
+				if(confirm('댓글 수정을 취소하시겠습니까?')){
+					let prevContent = editingComment.text();
+					cancelEdit(editingComment);
+					editingComment.val(prevContent);
+					editingComment = null;
+					return editingComment;
+				}
 			}
 			//alert('click');
 			
@@ -95,7 +112,18 @@
 						const year = dt.getFullYear().toString().substr(2, 4);
 						const month = dt.getMonth()+1;
 						const date = dt.getDate();
-						const now = year + "-"+month+"-"+date;
+						let now = null;
+						if(month < 10 & date < 10){
+							now = year + "-0"+month+"-0"+date;	
+						}else if(month < 10 & date >= 10){
+							now = year + "-0"+month+"-"+date;
+						}else if(month >=10 & date < 10){
+							now = year + "-"+month+"-0"+date;
+						}else{
+							now = year + "-"+month+"-"+date;
+						}
+						
+						
 						
 						const article = `<article>
 											<input type="hidden" name="no" value=`+maxNo+`>
@@ -119,6 +147,8 @@
 						if(empty.is(':visible')){
 							empty.remove();
 						}
+						editingComment = null;
+						return editingComment;
 					}else{
 						alert('댓글 등록이 실패했습니다.');
 					}
@@ -140,6 +170,17 @@
 		/////////////////////////////////////////////////////////////////////
 		////////////////////////    댓글 수정   ///////////////////////////////
 		/////////////////////////////////////////////////////////////////////
+		// 수정중인 댓글의 수정 취소 함수
+		function cancelEdit(comment){
+			// 수정중인 댓글의 클래스 삭제
+			comment.removeClass('modi');
+			// readonly로 변경
+			comment.attr('readonly',true);
+			// 수정완료를 수정으로 변경
+			comment.next().children('.modify').text('수정');
+			// 취소버튼 숨김
+			comment.next().children('.cancle').hide();
+		}
 		// 댓글 수정버튼을 누른다.
 		$(document).on('click', '.modify', function(e){
 			e.preventDefault();
@@ -147,10 +188,23 @@
 			// txt = this = 수정버튼 
 			const txt = $(this).text();
 			
+			const prevContent = $(editingComment).text();
+			console.log(prevContent);
+			if(editingComment !== null & txt == '수정'){
+				if(confirm('댓글수정을 취소하시겠습니까?')){
+					cancelEdit(editingComment);
+					editingComment.val(prevContent);
+				}
+			}
+			// textarea contentComment
+			editingComment = $(this).parent().prev();
+			
+			
+			
 			// txt의 이름이 '수정'이라고 돼있으면
 			if(txt == '수정'){
 				
-				// 수정버튼의 부모의 이전 태그에 'modi' 클래스를 추가한다. 
+				// 수정버튼의 부모의 이전 태그(comment textarea)에 'modi' 클래스를 추가한다. 
 				$(this).parent().prev().addClass('modi');
 				//readonly 해제
 				$(this).parent().prev().attr('readonly', false);
@@ -161,6 +215,7 @@
 				// 수정버튼의 이전 태그(취소)가 보인다.
 				$(this).prev().show();
 			
+				console.log('수정');
 			// 수정버튼의 이름이 현재 '수정완료'라고 돼있으면
 			}else if(txt == '수정완료'){
 				
@@ -170,32 +225,39 @@
 					const content = $(this).parent().prev().val();
 					const no = $(this).parent().parent().children().first().val();
 					
-					console.log("modiContent : "+content);
+					const prevContent = $(editingComment).text();
 					
-					const jsonData = {
-							"no" : no,
-							"content" : content
-					};
-					
-					$.ajax({
-						url: '/Farmstory2/comment.do',
-						type: 'get',
-						data: jsonData,
-						dataType: 'json',
-						success: function(data){
-							console.log(data.result);
-							// 댓글 수정에 성공하면
-							if(data.result > 0){
-								//alert('댓글이 수정되었습니다.');
+					if(content !== prevContent){
+						console.log("modiContent : "+content);
+						
+						const jsonData = {
+								"no" : no,
+								"content" : content
+						};
+						
+						$.ajax({
+							url: '/Farmstory2/comment.do',
+							type: 'get',
+							data: jsonData,
+							dataType: 'json',
+							success: function(data){
+								console.log(data.result);
+								// 댓글 수정에 성공하면
+								if(data.result > 0){
+									//alert('댓글이 수정되었습니다.');
+								}
 							}
-						}
-					}); //ajax end
+						}); //ajax end
+					}
 					
 					// 수정모드 해제
 					$(this).parent().prev().removeClass('modi');
 					$(this).parent().prev().attr('readonly', true);
 					$(this).text('수정');
 					$(this).prev().hide();
+					editingComment = null;
+					return editingComment;
+					console.log('수정완료');
 				} // confirm end
 			} // else if end
 		}); // modify click end
@@ -215,8 +277,9 @@
 				$(this).parent().prev().attr('readonly', true);
 				$(this).next().text('수정');
 				$(this).hide();
+				editingComment = null;
+				return editingComment;
 			}
-			
 		}); // cancle end
 	})// end
 </script>

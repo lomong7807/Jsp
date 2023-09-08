@@ -65,7 +65,7 @@
                 </c:if>
                 <a href="${ctxPath}/board/list.do?group=Community&cate=qna">고객센터</a>
             </p>
-            <img src="${ctxPath}/images/head_txt_img.png" alt="3만원 이상 무료배송"/>
+            <a href="${ctxPath}/market/list.do?type=0"><img src="${ctxPath}/images/head_txt_img.png" alt="3만원 이상 무료배송"/></a>
             
             <ul class="gnb">
                 <li><a href="${ctxPath}/introduction/hello.do">팜스토리소개</a></li>

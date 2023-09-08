@@ -19,7 +19,7 @@
 			            <c:forEach var="article" items="${articles}">
 			            <tr>
 			                <td>${pageStartNum = pageStartNum - 1}</td>
-			                <td><a href="./view.do?no=${article.no}&group=${group}&cate=${article.cate}">${article.title}</a>&nbsp;[${article.comment}]</td>
+			                <td><a href="./view.do?no=${article.no}&group=${group}&cate=${article.cate}&target=view">${article.title}</a>&nbsp;[${article.comment}]</td>
 			                <td>${article.nick}</td>
 			                <td>${article.rdate}</td>
 			                <td>${article.hit}</td>
@@ -41,7 +41,7 @@
 		            </c:if>
 		        </div>
 			    <!-- 글쓰기 버튼 -->
-			    <a href="./write.do?group=${group}&cate=${cate}" class="btnWrite">글쓰기</a>
+			    <a href="./write.do?group=${group}&cate=${cate}&target=write" class="btnWrite">글쓰기</a>
 			</section>
 			
 	   		<!-- 내용 끝 -->

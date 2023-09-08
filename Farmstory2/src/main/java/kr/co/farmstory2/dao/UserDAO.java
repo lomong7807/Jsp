@@ -1,5 +1,6 @@
 package kr.co.farmstory2.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -7,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.farmstory2.db.DBHelper;
 import kr.co.farmstory2.db.SQL;
+import kr.co.farmstory2.dto.OrderDTO;
 import kr.co.farmstory2.dto.UserDTO;
 
 public class UserDAO extends DBHelper{
@@ -66,6 +68,40 @@ public class UserDAO extends DBHelper{
 			logger.error("selectUser() error : "+e.getMessage());
 		}
 		return dto;
+	}
+	// 추가 
+	public List<UserDTO> selectLatestUsers(int size) {
+		
+		List<UserDTO> latests = new ArrayList<>();
+		
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.SELECT_LATEST_USERS);
+			psmt.setInt(1, size);
+			
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				UserDTO dto = new UserDTO();
+				dto.setUid(rs.getString(1));
+				dto.setName(rs.getString(2));
+				dto.setNick(rs.getString(3));
+				dto.setEmail(rs.getString(4));
+				dto.setHp(rs.getString(5));
+				dto.setRole(rs.getString(6));
+				dto.setZip(rs.getString(7));
+				dto.setAddr1(rs.getString(8));
+				dto.setAddr2(rs.getString(9));
+				dto.setRegip(rs.getString(10));
+				dto.setRegDate(rs.getString(11));
+				latests.add(dto);
+			}
+			close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return latests;
 	}
 	public List<UserDTO> selectUsers() {
 		return null;
